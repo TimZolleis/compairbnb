@@ -1,22 +1,26 @@
 import { Link } from '@remix-run/react';
+import { ReactNode } from 'react';
 
 export const NoItemsComponent = ({
     title,
     subtext,
     ctaLink,
     ctaLinkName,
+    children,
 }: {
     title: string;
     subtext: string;
     ctaLink?: string;
     ctaLinkName?: string;
+    children?: ReactNode;
 }) => {
     return (
         <section
             className={
-                'text-center rounded-md w-full px-5 py-10 border border-rose-500 bg-white/30 shadow-xl ring-1 ring-gray-900/5 backdrop-blur-lg max-w-xl mx-auto'
+                'text-center rounded-md w-full mt-10 px-5 py-10 border border-rose-500 bg-white/30 shadow-xl ring-1 ring-gray-900/5 backdrop-blur-lg max-w-xl mx-auto'
             }>
-            <p className={'text-title-medium font-semibold'}>{title}</p>
+            <div className={'flex justify-center'}>{children}</div>
+            <p className={'text-title-medium font-semibold mt-4'}>{title}</p>
             <p className={'text-sm '}>{subtext}</p>
             <div className={'mt-5'}>
                 {ctaLink ? (

@@ -18,7 +18,6 @@ export const links: LinksFunction = () => [{ rel: 'stylesheet', href: stylesheet
 
 export const loader = async ({ request }: DataFunctionArgs) => {
     const user = await getUser(request);
-    console.log('User', user);
     return json({ user });
 };
 export default function App() {

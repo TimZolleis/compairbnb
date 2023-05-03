@@ -10,27 +10,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model WishList {
+model Balloon {
   id           String    @id @default(uuid())
   ownerId      String
   owner        User      @relation(fields: [ownerId], references: [id])
   name         String
   participants Int
   listings     Listing[]
+  startDate    String
+  endDate      String
 }
 
 model User {
-  id        String     @id @default(uuid())
-  name      String     @unique
-  email     String
-  password  String
-  wishLists WishList[]
+  id       String    @id @default(uuid())
+  name     String    @unique
+  email    String
+  password String
+  ballons  Balloon[]
 }
 
 model Listing {
-  id         String   @id
-  rating     Int
-  customName String
-  wishListId String
-  wishList   WishList @relation(fields: [wishListId], references: [id])
+  id         String  @id
+  rating     Int?
+  customName String?
+  balloonId  String
+  balloon    Balloon @relation(fields: [balloonId], references: [id])
 }
