@@ -1,5 +1,6 @@
 import { Link } from '@remix-run/react';
 import { ReactNode } from 'react';
+import { Container } from '~/ui/components/common/Container';
 
 export const NoItemsComponent = ({
     title,
@@ -15,10 +16,7 @@ export const NoItemsComponent = ({
     children?: ReactNode;
 }) => {
     return (
-        <section
-            className={
-                'text-center rounded-md w-full mt-10 px-5 py-10 border border-rose-500 bg-white/30 shadow-xl ring-1 ring-gray-900/5 backdrop-blur-lg max-w-xl mx-auto'
-            }>
+        <Container className={'text-center '}>
             <div className={'flex justify-center'}>{children}</div>
             <p className={'text-title-medium font-semibold mt-4'}>{title}</p>
             <p className={'text-sm '}>{subtext}</p>
@@ -31,6 +29,6 @@ export const NoItemsComponent = ({
                     </Link>
                 ) : null}
             </div>
-        </section>
+        </Container>
     );
 };

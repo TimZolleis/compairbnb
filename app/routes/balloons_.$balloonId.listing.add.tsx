@@ -1,5 +1,4 @@
-import { BalloonForm } from '~/routes/balloon.new';
-import { Modal, useModal } from '~/ui/components/modal/Modal';
+import { Modal } from '~/ui/components/modal/Modal';
 import { Form, useNavigate, useNavigation } from '@remix-run/react';
 import { TextInput } from '~/ui/components/form/TextInput';
 import { DataFunctionArgs, redirect } from '@remix-run/node';
@@ -36,7 +35,7 @@ export const action = async ({ request, params }: DataFunctionArgs) => {
     }
     const { listingId, searchParams } = parseAirbnbLink(airbnbLink);
     const listing = await addListingToBalloon(balloonId, listingId);
-    return redirect(`/balloon/${balloonId}`);
+    return redirect(`/balloons/${balloonId}`);
 };
 
 const AddListingToBalloonPage = () => {
@@ -84,49 +83,27 @@ const AddListingToBalloonPage = () => {
                                 </p>
                             </span>
                             <TextInput name={'listingName'} placeholder={'Fancy beach house'} />
-                            <div>
+                            <div className={'flex items-center flex-wrap gap-2 mt-5'}>
                                 {guests ? (
-                                    <>
-                                        <span
-                                            className={
-                                                'leading-none w-full flex justify-start py-2'
-                                            }>
-                                            <p className={'text-gray-600 font-medium'}>Guests</p>
-                                        </span>
-                                        <TextInput
-                                            name={'guests'}
-                                            defaultValue={guests}></TextInput>
-                                    </>
+                                    <DetectedValueComponent
+                                        description={'Guests'}
+                                        value={guests}
+                                        name={'guests'}
+                                    />
                                 ) : null}
                                 {checkIn ? (
-                                    <>
-                                        <span
-                                            className={
-                                                'leading-none w-full flex justify-start py-2'
-                                            }>
-                                            <p className={'text-gray-600 font-medium'}>
-                                                Check in Date
-                                            </p>
-                                        </span>
-                                        <TextInput
-                                            name={'guests'}
-                                            defaultValue={checkIn}></TextInput>
-                                    </>
+                                    <DetectedValueComponent
+                                        description={'Check in date'}
+                                        value={checkIn}
+                                        name={'checkOut'}
+                                    />
                                 ) : null}
                                 {checkOut ? (
-                                    <>
-                                        <span
-                                            className={
-                                                'leading-none w-full flex justify-start py-2'
-                                            }>
-                                            <p className={'text-gray-600 font-medium'}>
-                                                Check out date
-                                            </p>
-                                        </span>
-                                        <TextInput
-                                            name={'checkOut'}
-                                            defaultValue={checkOut}></TextInput>
-                                    </>
+                                    <DetectedValueComponent
+                                        description={'Check Out date'}
+                                        value={checkOut}
+                                        name={'checkout'}
+                                    />
                                 ) : null}
                             </div>
 
@@ -161,6 +138,24 @@ const Label = ({ text }: { text: string }) => {
         <span className={'leading-none w-full flex justify-start py-2'}>
             <p className={'text-gray-600 font-medium'}>{text}</p>
         </span>
+    );
+};
+
+const DetectedValueComponent = ({
+    description,
+    value,
+    name,
+}: {
+    description: string;
+    value: string;
+    name: string;
+}) => {
+    return (
+        <div className={'rounded-md py-2 px-5 shadow-md bg-white flex flex-col justify-center'}>
+            <p className={'font-medium text-sm'}>{description}</p>
+            <p className={'text-gray-600'}>{value}</p>
+            <input type='hidden' name={name} value={value} />
+        </div>
     );
 };
 

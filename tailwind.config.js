@@ -7,6 +7,7 @@ module.exports = {
                 inter: ['Inter', 'sans-serif'],
             },
             fontSize: {
+                'display-2xl': '72px',
                 'display-large': '64px',
                 'display-medium': '48px',
                 'display-small': '40px',
@@ -22,6 +23,9 @@ module.exports = {
                 'body-large': '16px',
                 'body-medium': '14px',
                 'body small': '12px',
+            },
+            colors: {
+                'background-start': '#D6DBDC',
             },
         },
     },

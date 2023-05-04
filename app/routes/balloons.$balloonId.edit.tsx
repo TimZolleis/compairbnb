@@ -1,35 +1,26 @@
 import { DataFunctionArgs, json, redirect } from '@remix-run/node';
 import { requireUser } from '~/utils/auth/session.server';
-import { findBalloon, updateBalloon } from '~/models/balloon.server';
+import { findBalloon, requireBalloon, updateBalloon } from '~/models/balloon.server';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import { Modal, useModal } from '~/ui/components/modal/Modal';
-import { BalloonForm } from '~/routes/balloon.new';
+import { BalloonForm } from '~/routes/balloons.new';
+import { requireParameter } from '~/utils/form/formdata.server';
 
 export const loader = async ({ request, params }: DataFunctionArgs) => {
     const user = await requireUser(request);
-    const balloonId = params.balloonId;
-    if (!balloonId) {
-        throw redirect('/');
-    }
-    const balloon = await findBalloon(balloonId, { requireOwnership: true, userId: user.id });
-    if (!balloon) {
-        throw redirect('/');
-    }
+    const balloonId = requireParameter('balloonId', params);
+    const balloon = await requireBalloon(balloonId, { requireOwnership: true, userId: user.id });
     return json({ balloon, user });
 };
 
 export const action = async ({ request, params }: DataFunctionArgs) => {
     const formData = await request.formData();
-    const balloonId = params.balloonId;
-    if (!balloonId) {
-        throw redirect('/');
-    }
+    const balloonId = requireParameter('balloonId', params);
     const balloonName = formData.get('balloonName')?.toString();
-    const p = formData.get('participants');
-    const participants = p !== null ? parseInt(p.toString()) : undefined;
+    const guests = parseInt(formData.get('guests')?.toString() ?? '') || undefined;
     const startDate = formData.get('startDate')?.toString();
     const endDate = formData.get('endDate')?.toString();
-    const balloon = await updateBalloon(balloonId, balloonName, participants, startDate, endDate);
+    const balloon = await updateBalloon(balloonId, balloonName, guests, startDate, endDate);
     return redirect(`/balloon/${balloon.id}`);
 };
 

@@ -5,7 +5,8 @@ export const icon = cva('', {
         size: {
             xs: 'h-4',
             sm: 'h-6',
-            normal: 'h-14',
+            normal: 'h-8',
+            lg: 'h-12',
             xl: 'h-20',
         },
         color: {
@@ -13,6 +14,12 @@ export const icon = cva('', {
         },
         hover: {
             pointer: 'hover:cursor-pointer',
+        },
+        direction: {
+            down: 'rotate-0',
+            up: 'rotate-180',
+            left: 'rotate-90',
+            right: '-rotate-90',
         },
     },
     defaultVariants: {

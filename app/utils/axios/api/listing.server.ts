@@ -106,7 +106,7 @@ async function checkAvailability({
     return { isAvailableDuringRequestedTimeframe, data };
 }
 
-async function getListingDetails(listingId: string) {
+export async function getListingDetails(listingId: string) {
     const url = 'https://api.airbnb.com/v1/listings';
     const client = getClient(url);
     const response = await client.get<ListingDetails>(listingId);

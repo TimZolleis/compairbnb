@@ -8,17 +8,17 @@ import { useState } from 'react';
 import { Modal, useModal } from '~/ui/components/modal/Modal';
 import { PlusIcon } from '~/ui/icons/PlusIcon';
 import { MinusIcon } from '~/ui/icons/MinusIcon';
-import { red } from 'kleur/colors';
 import { Balloon } from '.prisma/client';
+import { MapComponent } from '~/ui/components/map/MapComponent';
 
 export const action = async ({ request }: DataFunctionArgs) => {
     const user = await requireUser(request);
     const formData = await request.formData();
     const wishlistName = requireFormDataValue('balloonName', formData);
-    const participants = parseInt(requireFormDataValue('participants', formData));
+    const guests = parseInt(requireFormDataValue('guests', formData));
     const startDate = requireFormDataValue('startDate', formData);
     const endDate = requireFormDataValue('endDate', formData);
-    const balloon = await createBalloon(user.id, wishlistName, participants, startDate, endDate);
+    const balloon = await createBalloon(user.id, wishlistName, guests, startDate, endDate);
     return redirect(`/balloons/${balloon.id}`);
 };
 const CreateWishlistPage = () => {
@@ -61,7 +61,7 @@ const ParticipantsCounter = ({ startingValue }: { startingValue?: number }) => {
                 </span>
 
                 <p className={'font-semibold text-gray-600 text-xl pointer-events-none'}>{count}</p>
-                <input type={'hidden'} name={'participants'} value={count} />
+                <input type={'hidden'} name={'guests'} value={count} />
                 <span
                     className={
                         'rounded-full p-1 border border-gray-300 flex justify-center items-center'
@@ -84,15 +84,20 @@ export const BalloonForm = ({ balloon }: { balloon?: Balloon }) => {
                     defaultValue={balloon?.name}
                 />
                 <span className={'leading-none'}>
-                    <p className={'text-gray-600 font-medium'}>Participants</p>
-                    <p className={'text-sm text-gray-400'}>How many people will travel with you?</p>
+                    <p className={'text-gray-600 font-medium'}>Guests</p>
                 </span>
-                <ParticipantsCounter startingValue={balloon?.participants} />
+                <ParticipantsCounter startingValue={balloon?.guests} />
+                <span className={'leading-none'}>
+                    <p className={'text-gray-600 font-medium'}>Destination</p>
+                    <p className={'text-sm text-gray-400 px-10'}>
+                        The destination is used for distance calculation
+                    </p>
+                </span>
+                <MapComponent />
                 <span className={'leading-none'}>
                     <p className={'text-gray-600 font-medium'}>Travel dates</p>
                     <p className={'text-sm text-gray-400 px-10'}>
-                        From when to when do you want to travel? Please enter the dates in the
-                        format "yyyy-mm-dd"
+                        Please enter the dates in the format "yyyy-mm-dd"
                     </p>
                 </span>
                 <span className={'grid md:grid-cols-2 gap-2'}>
