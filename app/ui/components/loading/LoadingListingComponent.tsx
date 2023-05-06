@@ -11,8 +11,8 @@ export const LoadingListingComponent = () => {
     );
 };
 
-export const LoadingListingsComponentGrid = () => {
-    const array = Array(8).fill('');
+export const LoadingListingsComponentGrid = ({ length }: { length: number }) => {
+    const array = Array(length).fill('');
 
     return (
         <div className={'flex items-center flex-wrap gap-5 mt-5'}>

@@ -1,16 +1,36 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CloseIcon } from '~/ui/icons/CloseIcon';
+import { cva, VariantProps } from 'class-variance-authority';
 
-export const Modal = ({
-    showModal,
-    toggleModal,
-    children,
-}: {
+const modal = cva(
+    'relative overflow-y-scroll text-center rounded-xl w-full border border-gray-500/30 bg-white shadow-xl ring-1 ring-gray-900/5 backdrop-blur-lg max-w-xl mx-auto px-5 py-3',
+    {
+        variants: {
+            width: {
+                xl: 'max-w-xl',
+                '2xl': 'max-w-2xl',
+                '3xl': 'max-w-3xl',
+                '4xl': 'max-w-4xl',
+                '5xl': 'max-w-5xl',
+                '6xl': 'max-w-6xl',
+                '7xl': 'max-w-7xl',
+                '8xl': 'max-w-8xl',
+            },
+        },
+        defaultVariants: {
+            width: 'xl',
+        },
+    }
+);
+
+interface ModalProps extends VariantProps<typeof modal> {
     showModal: boolean;
     toggleModal: () => void;
     children: ReactNode;
-}) => {
+}
+
+export const Modal = ({ showModal, toggleModal, children, width }: ModalProps) => {
     useEffect(() => {
         if (showModal) {
             document.body.style.overflow = 'hidden';
@@ -66,9 +86,7 @@ export const Modal = ({
                             }}
                             exit={{ y: 500, opacity: 0 }}
                             onClick={(e) => e.stopPropagation()}
-                            className={
-                                'relative overflow-y-scroll text-center rounded-xl w-full border border-gray-500/30 bg-white shadow-xl ring-1 ring-gray-900/5 backdrop-blur-lg max-w-xl mx-auto px-5 py-3'
-                            }>
+                            className={modal({ width })}>
                             <span className={'absolute right-0 p-3'}>
                                 <CloseIcon
                                     onClick={() => closeModal()}

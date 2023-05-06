@@ -1,14 +1,6 @@
-import { DataFunctionArgs, defer, json } from '@remix-run/node';
+import { DataFunctionArgs, defer } from '@remix-run/node';
 import { requireUser } from '~/utils/auth/session.server';
-import {
-    Await,
-    Form,
-    Link,
-    Outlet,
-    useLoaderData,
-    useNavigation,
-    useSubmit,
-} from '@remix-run/react';
+import { Await, Form, Link, Outlet, useLoaderData, useNavigation } from '@remix-run/react';
 import { NoItemsComponent } from '~/ui/components/error/NoItemsComponent';
 import { HouseIllustration } from '~/ui/illustrations/HouseIllustration';
 import { deleteListing } from '~/models/listing.server';
@@ -19,14 +11,11 @@ import { CloseIcon } from '~/ui/icons/CloseIcon';
 import { requireParameter } from '~/utils/form/formdata.server';
 import { prisma } from '../../prisma/db';
 import { EntityNotFoundException } from '~/exception/EntityNotFoundException';
-import { getListing, getListingPrice } from '~/utils/axios/api/listing.server';
-import { Suspense, useEffect } from 'react';
-import {
-    LoadingListingComponent,
-    LoadingListingsComponentGrid,
-} from '~/ui/components/loading/LoadingListingComponent';
+import { getListing } from '~/utils/axios/api/listing.server';
+import { Suspense } from 'react';
+import { LoadingListingsComponentGrid } from '~/ui/components/loading/LoadingListingComponent';
 import { Tag } from '~/ui/components/common/Tag';
-import { LoadingComponent, LoadingSpinner } from '~/ui/components/loading/LoadingComponent';
+import { LoadingSpinner } from '~/ui/components/loading/LoadingComponent';
 
 export const loader = async ({ request, params }: DataFunctionArgs) => {
     const user = await requireUser(request);
@@ -58,7 +47,7 @@ export const loader = async ({ request, params }: DataFunctionArgs) => {
             return { listing, details };
         })
     );
-    return defer({ balloon, user, listingsWithDetails });
+    return defer({ length: listings.length, balloon, user, listingsWithDetails });
 };
 
 export const action = async ({ request }: DataFunctionArgs) => {
@@ -71,7 +60,7 @@ export const action = async ({ request }: DataFunctionArgs) => {
 };
 
 const BalloonDetailsPage = () => {
-    const { balloon, user, listingsWithDetails } = useLoaderData<typeof loader>();
+    const { balloon, length, user, listingsWithDetails } = useLoaderData<typeof loader>();
     return (
         <>
             <span className={'flex items-center justify-between'}>
@@ -94,13 +83,14 @@ const BalloonDetailsPage = () => {
                 </span>
             </span>
             <BalloonDetailsComponent balloon={balloon} />
-            <Suspense fallback={<LoadingListingsComponentGrid />}>
+            <Suspense fallback={<LoadingListingsComponentGrid length={length} />}>
                 <Await resolve={listingsWithDetails}>
                     {(listings) =>
                         listings.length > 0 ? (
                             <div className={'mt-5 inline-flex gap-5 flex-wrap'}>
                                 {listings.map((listing) => (
                                     <ListingComponent
+                                        guests={balloon.guests}
                                         details={listing.details}
                                         listing={listing.listing}
                                         key={listing.listing.id}
@@ -127,19 +117,18 @@ const BalloonDetailsPage = () => {
 const ListingComponent = ({
     listing,
     details,
+    guests,
 }: {
     listing: Listing;
     details: Awaited<ReturnType<typeof getListing>>;
+    guests: number;
 }) => {
     const link = `https://airbnb.com/rooms/${listing.id}`;
     const navigation = useNavigation();
 
     return (
         <>
-            <Link
-                target={'_blank'}
-                to={link}
-                className={'relative w-72 transition hover:scale-105 ease-in-out duration-200'}>
+            <div className={'relative w-72 transition hover:scale-105 ease-in-out duration-200'}>
                 {navigation.formData?.get('deleteListing') === listing.id && (
                     <RemovingLinkAnimation />
                 )}
@@ -154,31 +143,46 @@ const ListingComponent = ({
                         <CloseIcon onClick={() => void 0}></CloseIcon>
                     </button>
                 </Form>
-                <img
-                    alt={'listing-thumbnail'}
-                    src={listing.thumbnailImageUrl}
-                    className={'bg-gray-200 rounded-xl object-cover h-44 w-72'}
-                />
-                <p className={'mt-2 font-medium'}>{listing.name}</p>
-                <span className={'flex items-center gap-2'}>
-                    <p className={'text-sm text-gray-600'}>{listing.locationName}</p>
-                    <Tag
-                        color={
-                            details.availability.isAvailableDuringRequestedTimeframe
-                                ? 'green'
-                                : 'red'
-                        }>
-                        {details.availability.isAvailableDuringRequestedTimeframe
-                            ? 'Available'
-                            : 'Not available'}
-                    </Tag>
-                </span>
-                <div className={'mt-1'}>
-                    <Tag color={'amber'} text={'sm'}>
-                        {details.pricing.totalPrice}
-                    </Tag>
-                </div>
-            </Link>
+                <Link to={`listing/${listing.id}`}>
+                    <img
+                        alt={'listing-thumbnail'}
+                        src={listing.thumbnailImageUrl}
+                        className={'bg-gray-200 rounded-xl object-cover h-44 w-72'}
+                    />
+                    <div className={'mt-2'}>
+                        <p
+                            className={`text-xs ${
+                                details.availability.isAvailableDuringRequestedTimeframe
+                                    ? 'text-green-500'
+                                    : 'text-red-500'
+                            }`}>
+                            {details.availability.isAvailableDuringRequestedTimeframe
+                                ? 'Available'
+                                : 'Not available'}
+                        </p>
+                        <p className={'font-medium'}>{listing.locationName}</p>
+                    </div>
+                    <span className={'flex gap-x-2 items-center'}>
+                        <p className={'text-sm text-gray-600 truncate'}>{listing.name}</p>
+                        <Tag rounding={'normal'} color={'pink'}>
+                            {listing.distance?.toFixed(2) || 0}km
+                        </Tag>
+                    </span>
+                    <div className={'mt-1 flex items-center gap-x-2'}>
+                        <p className={'font-medium'}>{details.pricing.totalPrice}</p>
+                        <p className={'text-gray-500 text-sm'}>
+                            €{' '}
+                            {(
+                                parseFloat(details.pricing.totalPrice.replace(/[^0-9.-]+/g, '')) /
+                                guests
+                            )
+                                .toFixed(2)
+                                .toLocaleString()}
+                            /person
+                        </p>
+                    </div>
+                </Link>
+            </div>
         </>
     );
 };

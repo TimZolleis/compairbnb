@@ -1,4 +1,4 @@
-import { Form, Link, useNavigate } from '@remix-run/react';
+import { Form, Link, useNavigate, useNavigation } from '@remix-run/react';
 import { TextInput } from '~/ui/components/form/TextInput';
 import { DataFunctionArgs, LinksFunction, redirect } from '@remix-run/node';
 import { requireUser } from '~/utils/auth/session.server';
@@ -11,6 +11,7 @@ import { MinusIcon } from '~/ui/icons/MinusIcon';
 import { Balloon } from '.prisma/client';
 import { LatLng } from 'leaflet';
 import { MapComponent } from '~/ui/components/map/MapComponent';
+import { LoadingSpinner } from '~/ui/components/loading/LoadingComponent';
 
 export const links: LinksFunction = () => [
     {
@@ -92,6 +93,7 @@ const ParticipantsCounter = ({ startingValue }: { startingValue?: number }) => {
 };
 //TODO: Integrate map pick with start location
 export const BalloonForm = ({ balloon }: { balloon?: Balloon }) => {
+    const navigation = useNavigation();
     return (
         <Form className={'w-full'} method={'post'}>
             <div className={'grid gap-2'}>
@@ -132,8 +134,15 @@ export const BalloonForm = ({ balloon }: { balloon?: Balloon }) => {
                         defaultValue={balloon?.endDate}
                     />
                 </span>
-                <button className={'rounded-md bg-rose-500 py-2 px-5 text-white font-medium mt-2'}>
-                    Save
+                <button
+                    className={
+                        'rounded-md bg-rose-500 py-2 px-5 text-white font-medium mt-2 flex justify-center'
+                    }>
+                    {navigation.state === 'idle' ? (
+                        'Save'
+                    ) : (
+                        <LoadingSpinner size={'medium'} color={'stroke-white'} />
+                    )}
                 </button>
             </div>
         </Form>

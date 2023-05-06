@@ -1,9 +1,26 @@
-import { cva } from 'class-variance-authority';
+import { cva, VariantProps } from 'class-variance-authority';
 
-export const LoadingSpinner = ({ color }: { color: string }) => {
+const spinnerContainer = cva('animate-spin -ml-1 mr-3  text-white', {
+    variants: {
+        size: {
+            small: 'h-4 w-4',
+            medium: 'h-6 w-6',
+            normal: 'h-8 w-8',
+        },
+    },
+    defaultVariants: {
+        size: 'normal',
+    },
+});
+
+interface SpinnerProps extends VariantProps<typeof spinnerContainer> {
+    color: string;
+}
+
+export const LoadingSpinner = ({ color, size }: SpinnerProps) => {
     return (
         <svg
-            className='animate-spin -ml-1 mr-3 h-8 w-8 text-white'
+            className={spinnerContainer({ size })}
             xmlns='http://www.w3.org/2000/svg'
             fill='none'
             viewBox='0 0 24 24'>

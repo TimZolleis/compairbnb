@@ -3,6 +3,7 @@ import { Balloon } from '.prisma/client';
 import bcrypt from 'bcrypt';
 import { findLocationByCoordinates } from '~/utils/map/location.server';
 import { getLocation } from 'jsonc-parser';
+import { calculateDistanceForListings } from '~/utils/map/distance.server';
 
 export type Optional<T, N extends keyof T> = Partial<Omit<T, N>> & Required<Pick<T, N>>;
 
@@ -63,6 +64,26 @@ export async function updateBalloon({
     lat,
     long,
 }: Optional<UpdateBalloonProps, 'balloonId'>) {
+    if (lat && long) {
+        const listings = await prisma.listing.findMany({ where: { balloonId } });
+        const distances = await calculateDistanceForListings({
+            startLat: lat,
+            startLong: long,
+            listings,
+        });
+        for (const entry of distances) {
+            if (entry.listing) {
+                await prisma.listing.update({
+                    where: {
+                        id: entry.listing.id,
+                    },
+                    data: {
+                        distance: entry.distance,
+                    },
+                });
+            }
+        }
+    }
     return prisma.balloon.update({
         where: {
             id: balloonId,

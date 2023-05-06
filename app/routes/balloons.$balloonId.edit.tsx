@@ -1,4 +1,4 @@
-import { DataFunctionArgs, json, redirect } from '@remix-run/node';
+import { DataFunctionArgs, json, LinksFunction, redirect } from '@remix-run/node';
 import { requireUser } from '~/utils/auth/session.server';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import { Modal, useModal } from '~/ui/components/modal/Modal';
@@ -23,14 +23,20 @@ export const loader = async ({ request, params }: DataFunctionArgs) => {
     }
     return json({ balloon, user });
 };
+export const links: LinksFunction = () => [
+    {
+        rel: 'stylesheet',
+        href: 'https://unpkg.com/leaflet@1.8.0/dist/leaflet.css',
+    },
+];
 
 export function getOptionalBalloonFormValues(formData: FormData) {
     const balloonName = formData.get('balloonName')?.toString();
     const guests = parseInt(formData.get('guests')?.toString() ?? '') || undefined;
     const startDate = formData.get('startDate')?.toString();
     const endDate = formData.get('endDate')?.toString();
-    const lat = parseInt(formData.get('lat')?.toString() ?? '') || undefined;
-    const long = parseInt(formData.get('long')?.toString() ?? '') || undefined;
+    const lat = parseFloat(formData.get('lat')?.toString() ?? '') || undefined;
+    const long = parseFloat(formData.get('long')?.toString() ?? '') || undefined;
     return { balloonName, guests, startDate, endDate, lat, long };
 }
 
@@ -48,7 +54,7 @@ export const action = async ({ request, params }: DataFunctionArgs) => {
         lat,
         long,
     });
-    return redirect(`/balloon/${balloon.id}`);
+    return redirect(`/balloons/${balloon.id}`);
 };
 
 const EditBalloonPage = () => {
