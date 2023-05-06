@@ -1,22 +1,41 @@
 import { prisma } from '../../prisma/db';
 import { Balloon } from '.prisma/client';
 import bcrypt from 'bcrypt';
+import { findLocationByCoordinates } from '~/utils/map/location.server';
+import { getLocation } from 'jsonc-parser';
 
-export async function getUserBalloons(userId: string) {
-    return prisma.balloon.findMany({
-        where: {
-            ownerId: userId,
-        },
-    });
+export type Optional<T, N extends keyof T> = Partial<Omit<T, N>> & Required<Pick<T, N>>;
+
+interface FindBalloonConfig {
+    require: boolean;
+    requireOwnership: boolean;
+    ownerId?: string;
+    include?: {
+        listings: boolean;
+    };
 }
 
-export async function createBalloon(
-    userId: string,
-    balloonName: string,
-    guests: number,
-    startDate: string,
-    endDate: string
-) {
+interface BalloonProps {
+    userId: string;
+    balloonName: string;
+    guests: number;
+    startDate: string;
+    endDate: string;
+    lat: number;
+    long: number;
+}
+
+export async function createBalloon({
+    userId,
+    balloonName,
+    guests,
+    startDate,
+    endDate,
+    lat,
+    long,
+}: BalloonProps) {
+    const location = await findLocationByCoordinates({ lat, long });
+    const city = location.data.resourceSets[0]?.resources[0]?.address?.locality;
     return prisma.balloon.create({
         data: {
             name: balloonName,
@@ -24,17 +43,26 @@ export async function createBalloon(
             guests,
             startDate,
             endDate,
+            lat,
+            long,
+            locationName: city || 'UNKNOWN',
         },
     });
 }
 
-export async function updateBalloon(
-    balloonId: string,
-    balloonName?: string,
-    guests?: number,
-    startDate?: string,
-    endDate?: string
-) {
+interface UpdateBalloonProps extends BalloonProps {
+    balloonId: string;
+}
+
+export async function updateBalloon({
+    balloonId,
+    balloonName,
+    guests,
+    startDate,
+    endDate,
+    lat,
+    long,
+}: Optional<UpdateBalloonProps, 'balloonId'>) {
     return prisma.balloon.update({
         where: {
             id: balloonId,
@@ -44,74 +72,23 @@ export async function updateBalloon(
             guests: guests,
             startDate: startDate,
             endDate: endDate,
+            lat,
+            long,
+            locationName:
+                lat && long
+                    ? await findLocationByCoordinates({
+                          lat,
+                          long,
+                      }).then((r) => r.data.resourceSets[0]?.resources[0]?.address?.locality)
+                    : undefined,
         },
     });
 }
 
-export async function updateStartLocation({
-    balloonId,
-    locationLat,
-    locationLong,
-    locationName,
-}: {
-    balloonId: string;
-    locationLat: number;
-    locationLong: number;
-    locationName: string;
-}) {
-    return prisma.balloon.update({
+export async function deleteBalloon(id: string) {
+    return prisma.balloon.delete({
         where: {
-            id: balloonId,
-        },
-        data: {
-            startLocationLat: locationLat,
-            startLocationLong: locationLong,
-            startLocationName: locationName,
+            id,
         },
     });
-}
-
-export async function findBalloon(
-    balloonId: string,
-    {
-        requireOwnership,
-        userId,
-    }: {
-        requireOwnership?: boolean;
-        userId?: string;
-    }
-) {
-    const balloon = await prisma.balloon.findUnique({
-        where: {
-            id: balloonId,
-        },
-    });
-    if (requireOwnership && userId) {
-        if (balloon?.ownerId !== userId) {
-            throw new Error('The user does not have ownership of this balloon');
-        }
-    }
-    return balloon;
-}
-
-export async function requireBalloon(
-    balloonId: string,
-    {
-        requireOwnership,
-        userId,
-    }: {
-        requireOwnership?: boolean;
-        userId?: string;
-    }
-) {
-    const balloon = await findBalloon(balloonId, { requireOwnership, userId });
-    if (!balloon) {
-        throw new Error('The requested balloon could not be found');
-    }
-    return balloon;
-}
-
-export async function createBalloonHash(balloon: Balloon) {
-    const string = `${balloon.startLocationLong}-${balloon.startLocationLat}`;
-    return await bcrypt.hash(string, 1);
 }

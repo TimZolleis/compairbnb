@@ -1,4 +1,6 @@
-const LoadingSpinner = () => {
+import { cva } from 'class-variance-authority';
+
+export const LoadingSpinner = ({ color }: { color: string }) => {
     return (
         <svg
             className='animate-spin -ml-1 mr-3 h-8 w-8 text-white'
@@ -6,7 +8,7 @@ const LoadingSpinner = () => {
             fill='none'
             viewBox='0 0 24 24'>
             <circle
-                className=' opacity-25 stroke-rose-500 '
+                className={`opacity-25 ${color}`}
                 cx='12'
                 cy='12'
                 r='10'
@@ -24,7 +26,7 @@ export const LoadingComponent = ({ loadingTitle }: { loadingTitle: string }) => 
     return (
         <div className={'rounded-md p-5 flex items-center flex-col gap-3'}>
             <p className={'font-semibold text-rose-500 text-title-medium'}>{loadingTitle}</p>
-            <LoadingSpinner />
+            <LoadingSpinner color={'stroke-rose-500'} />
         </div>
     );
 };

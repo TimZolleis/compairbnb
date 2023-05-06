@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import type { User } from '.prisma/client';
 import { UserMenuComponent } from '~/ui/components/user/UserMenuComponent';
+import { Link } from '@remix-run/react';
 export const AppLayout = ({ children, user }: { children: ReactNode; user?: User }) => {
     return (
         <main className={'bg-gradient-to-b from-transparent to-white bg-background-start/40'}>
@@ -14,7 +15,9 @@ export const AppLayout = ({ children, user }: { children: ReactNode; user?: User
 const NavBar = ({ user }: { user?: User }) => {
     return (
         <nav className={'flex w-full items-center justify-between'}>
-            <div className={'font-semibold text-title-medium'}>compairbnb</div>
+            <Link to={'/'} className={'font-semibold text-title-medium'}>
+                compairbnb
+            </Link>
             <UserMenuComponent user={user}></UserMenuComponent>
         </nav>
     );

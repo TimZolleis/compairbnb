@@ -3,19 +3,15 @@ import { json } from '@remix-run/node';
 import { requireUser } from '~/utils/auth/session.server';
 import { Link, Outlet, useLoaderData } from '@remix-run/react';
 import { NoItemsComponent } from '~/ui/components/error/NoItemsComponent';
-import { getUserBalloons } from '~/models/balloon.server';
 import { BalloonIllustration } from '~/ui/illustrations/BalloonIllustration';
 import { Balloon } from '.prisma/client';
 import { ChevronUpIcon } from '~/ui/icons/ChevronUpIcon';
 import { PageHeader } from '~/ui/components/common/PageHeader';
-
-export const meta: V2_MetaFunction = () => {
-    return [{ title: 'React leaflet example' }];
-};
+import { prisma } from '../../prisma/db';
 
 export const loader = async ({ request }: DataFunctionArgs) => {
     const user = await requireUser(request);
-    const balloons = await getUserBalloons(user.id);
+    const balloons = await prisma.balloon.findMany({ where: { ownerId: user.id } });
     return json({ balloons });
 };
 
@@ -34,7 +30,7 @@ export default function BalloonPage() {
                 <NoItemsComponent
                     title={'You do not have any balloons'}
                     subtext={'To compare airbnbs, please put them in a balloon or use QuickCompare'}
-                    ctaLink={'/balloons/new'}
+                    ctaLink={'/balloons/add'}
                     ctaLinkName={'Create Balloon'}>
                     <BalloonIllustration className={'w-24'} />
                 </NoItemsComponent>
@@ -65,7 +61,7 @@ const BalloonComponent = ({ balloon }: { balloon: Balloon }) => {
     );
 };
 
-const BalloonDetailBadge = ({ name, value }: { name: string; value: string }) => {
+export const BalloonDetailBadge = ({ name, value }: { name: string; value: string }) => {
     return (
         <div className={'flex'}>
             <div
@@ -91,6 +87,7 @@ export const BalloonDetailsComponent = ({ balloon }: { balloon: Balloon }) => {
             <BalloonDetailBadge name={'Start date'} value={balloon.startDate.toString()} />
             <BalloonDetailBadge name={'End date'} value={balloon.endDate.toString()} />
             <BalloonDetailBadge name={'Nights'} value={calculateNights().toString()} />
+            <BalloonDetailBadge name={'Starting location'} value={balloon.locationName} />
         </div>
     );
 };

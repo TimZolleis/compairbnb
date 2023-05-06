@@ -34,7 +34,7 @@ export const Modal = ({
                         key={showModal.toString()}
                         onClick={() => closeModal()}
                         className={
-                            'fixed bottom-0 left-0 right-0 top-0 z-50 flex flex-col items-center justify-center bg-black bg-opacity-40 p-3 '
+                            'fixed bottom-0 left-0 right-0 top-0 z-50 flex flex-col items-center justify-center backdrop-blur-sm bg-white/30 p-3 '
                         }
                         initial={{
                             opacity: 0,
@@ -50,7 +50,6 @@ export const Modal = ({
                         }}
                         exit={{ opacity: 0 }}>
                         <motion.section
-                            layout
                             initial={{
                                 opacity: 0,
                                 y: 500,
@@ -68,7 +67,7 @@ export const Modal = ({
                             exit={{ y: 500, opacity: 0 }}
                             onClick={(e) => e.stopPropagation()}
                             className={
-                                'relative overflow-y-scroll text-center rounded-xl w-full border border-rose-500 bg-white shadow-xl ring-1 ring-gray-900/5 backdrop-blur-lg max-w-xl mx-auto px-5 py-3'
+                                'relative overflow-y-scroll text-center rounded-xl w-full border border-gray-500/30 bg-white shadow-xl ring-1 ring-gray-900/5 backdrop-blur-lg max-w-xl mx-auto px-5 py-3'
                             }>
                             <span className={'absolute right-0 p-3'}>
                                 <CloseIcon

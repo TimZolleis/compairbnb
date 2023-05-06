@@ -4,36 +4,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b9e88dae-dedd-4ce1-9bfa-17ee84bf83e8" name="Changes" comment="change a lot - mostly ui and api calls">
-      <change afterPath="$PROJECT_DIR$/app/routes/balloons.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/routes/logout.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/routes/map.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/ui/components/common/ClientOnly.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/ui/components/common/Container.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/ui/components/common/PageHeader.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/ui/components/map/DraggableMarker.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/ui/components/map/MapComponent.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/ui/components/map/map.client.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/utils/map/map.server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6928a396-c412-487c-bfb8-063e61f37cf0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6928a396-c412-487c-bfb8-063e61f37cf0.xml" afterDir="false" />
+    <list default="true" id="b9e88dae-dedd-4ce1-9bfa-17ee84bf83e8" name="Changes" comment="change a lot and add map">
+      <change afterPath="$PROJECT_DIR$/app/exception/EntityNotFoundException.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routes/api.price.$listingId.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/types/bing-maps/bing-maps-location.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/ui/components/common/Tag.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/ui/components/loading/LoadingListingComponent.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/map/distance.server.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/map/location.server.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/balloon.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/balloon.server.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/listing.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/listing.server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/user.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/_index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/_index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/balloon.$balloonId.edit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons.$balloonId.edit.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/balloon.$balloonId.listing.add.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.add.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/balloon.$balloonId.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/balloon.new.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons.new.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons.$balloonId.edit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons.$balloonId.edit.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons.new.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons.add.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.add.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.add.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/types/airbnb-listing-price.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/types/airbnb-listing-price.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/ui/Layout/AppLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/Layout/AppLayout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui/components/error/NoItemsComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/components/error/NoItemsComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui/icons/ChevronUpIcon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/icons/ChevronUpIcon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui/icons/icon.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/icons/icon.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/form/Toggle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/components/form/Toggle.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/loading/LoadingComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/components/loading/LoadingComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/modal/Modal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/components/modal/Modal.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/utils/axios/api/listing.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/axios/api/listing.server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/map/map.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/map/map.server.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,6 +43,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Dockerfile" />
+        <option value="tsconfig.json" />
         <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
       </list>
@@ -116,7 +113,8 @@
       <workItem from="1683213919036" duration="4217000" />
       <workItem from="1683218470458" duration="1616000" />
       <workItem from="1683220893418" duration="4824000" />
-      <workItem from="1683225740212" duration="10872000" />
+      <workItem from="1683225740212" duration="11039000" />
+      <workItem from="1683368107984" duration="11760000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1683058528623</created>
@@ -132,7 +130,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683150482026</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="change a lot and add map">
+      <created>1683236684728</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1683236684728</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -141,7 +146,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
     <MESSAGE value="change a lot - mostly ui and api calls" />
-    <option name="LAST_COMMIT_MESSAGE" value="change a lot - mostly ui and api calls" />
+    <MESSAGE value="change a lot and add map" />
+    <option name="LAST_COMMIT_MESSAGE" value="change a lot and add map" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

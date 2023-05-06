@@ -27,33 +27,24 @@ interface ListingDetailsProps {
 }
 
 export async function getListing({ guests, checkIn, checkOut, listingId }: ListingDetailsProps) {
-    const config = {
-        guests: 1,
-        checkIn: '2023-06-19',
-        checkOut: '2023-06-26',
-        listingId: '3001260',
-    };
     const availability = await checkAvailability({
-        checkIn: config.checkIn,
-        checkOut: config.checkOut,
-        listingId: config.listingId,
+        checkIn: checkIn,
+        checkOut: checkOut,
+        listingId: listingId,
     });
-    if (!availability.isAvailableDuringRequestedTimeframe) {
-        throw new Error('Not available during requested timeframe');
-    }
-    const pricing = await getListingPrice({
-        guests: config.guests,
-        checkIn: config.checkIn,
-        checkOut: config.checkOut,
-        listingId: config.listingId,
-    });
-    const listingDetails = await getListingDetails(config.listingId);
 
-    return { pricing, listingDetails, availability };
+    const pricing = await getListingPrice({
+        guests: guests,
+        checkIn: checkIn,
+        checkOut: checkOut,
+        listingId: listingId,
+    });
+
+    return { pricing, availability };
 }
 
 //TODO: Check if potential for cleanup
-async function checkAvailability({
+export async function checkAvailability({
     checkIn,
     checkOut,
     listingId,
@@ -113,7 +104,12 @@ export async function getListingDetails(listingId: string) {
     return response.data;
 }
 
-async function getListingPrice({ guests, checkIn, checkOut, listingId }: ListingDetailsProps) {
+export async function getListingPrice({
+    guests,
+    checkIn,
+    checkOut,
+    listingId,
+}: ListingDetailsProps) {
     const { variables, extensions } = createListingArguments({
         guests,
         checkIn,
@@ -131,15 +127,16 @@ async function getListingPrice({ guests, checkIn, checkOut, listingId }: Listing
         },
     });
     const bookingSection =
-        response.data.data.presentation.stayProductDetailPage.sections.sections.find(
+        response.data.data?.presentation?.stayProductDetailPage?.sections?.sections?.find(
             (section) => section.sectionId === 'BOOK_IT_FLOATING_FOOTER'
         );
     const totalPriceDetail =
-        bookingSection?.section?.structuredDisplayPrice?.explanationData.priceDetails.find(
+        bookingSection?.section?.structuredDisplayPrice?.explanationData?.priceDetails?.find(
             (detail) => detail.items.some((item) => item.description === 'Total')
         );
-    const pricePerNightDetail = bookingSection?.section?.structuredDisplayPrice?.primaryLine;
-    return { totalPriceDetail, pricePerNightDetail };
+
+    const totalPrice = totalPriceDetail?.items[0]?.priceString || '0';
+    return { totalPrice };
 }
 
 function createListingArguments({ guests, checkIn, checkOut, listingId }: ListingDetailsProps) {

@@ -1,26 +1,53 @@
 import { DataFunctionArgs, json, redirect } from '@remix-run/node';
 import { requireUser } from '~/utils/auth/session.server';
-import { findBalloon, requireBalloon, updateBalloon } from '~/models/balloon.server';
 import { useLoaderData, useNavigate } from '@remix-run/react';
 import { Modal, useModal } from '~/ui/components/modal/Modal';
-import { BalloonForm } from '~/routes/balloons.new';
 import { requireParameter } from '~/utils/form/formdata.server';
+import { updateBalloon } from '~/models/balloon.server';
+import { prisma } from '../../prisma/db';
+import { BalloonForm } from '~/routes/balloons.add';
 
 export const loader = async ({ request, params }: DataFunctionArgs) => {
     const user = await requireUser(request);
     const balloonId = requireParameter('balloonId', params);
-    const balloon = await requireBalloon(balloonId, { requireOwnership: true, userId: user.id });
+    const balloon = await prisma.balloon.findUnique({
+        where: {
+            id_ownerId: {
+                id: balloonId,
+                ownerId: user.id,
+            },
+        },
+    });
+    if (!balloon) {
+        throw new Error('The requested balloon could not be found');
+    }
     return json({ balloon, user });
 };
 
-export const action = async ({ request, params }: DataFunctionArgs) => {
-    const formData = await request.formData();
-    const balloonId = requireParameter('balloonId', params);
+export function getOptionalBalloonFormValues(formData: FormData) {
     const balloonName = formData.get('balloonName')?.toString();
     const guests = parseInt(formData.get('guests')?.toString() ?? '') || undefined;
     const startDate = formData.get('startDate')?.toString();
     const endDate = formData.get('endDate')?.toString();
-    const balloon = await updateBalloon(balloonId, balloonName, guests, startDate, endDate);
+    const lat = parseInt(formData.get('lat')?.toString() ?? '') || undefined;
+    const long = parseInt(formData.get('long')?.toString() ?? '') || undefined;
+    return { balloonName, guests, startDate, endDate, lat, long };
+}
+
+export const action = async ({ request, params }: DataFunctionArgs) => {
+    const formData = await request.formData();
+    const balloonId = requireParameter('balloonId', params);
+    const { balloonName, guests, startDate, endDate, lat, long } =
+        getOptionalBalloonFormValues(formData);
+    const balloon = await updateBalloon({
+        balloonId,
+        balloonName,
+        guests,
+        startDate,
+        endDate,
+        lat,
+        long,
+    });
     return redirect(`/balloon/${balloon.id}`);
 };
 

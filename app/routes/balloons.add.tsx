@@ -1,27 +1,45 @@
 import { Form, Link, useNavigate } from '@remix-run/react';
 import { TextInput } from '~/ui/components/form/TextInput';
-import { DataFunctionArgs, redirect } from '@remix-run/node';
+import { DataFunctionArgs, LinksFunction, redirect } from '@remix-run/node';
 import { requireUser } from '~/utils/auth/session.server';
 import { requireFormDataValue } from '~/utils/form/formdata.server';
 import { createBalloon } from '~/models/balloon.server';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, useModal } from '~/ui/components/modal/Modal';
 import { PlusIcon } from '~/ui/icons/PlusIcon';
 import { MinusIcon } from '~/ui/icons/MinusIcon';
 import { Balloon } from '.prisma/client';
+import { LatLng } from 'leaflet';
 import { MapComponent } from '~/ui/components/map/MapComponent';
+
+export const links: LinksFunction = () => [
+    {
+        rel: 'stylesheet',
+        href: 'https://unpkg.com/leaflet@1.8.0/dist/leaflet.css',
+    },
+];
 
 export const action = async ({ request }: DataFunctionArgs) => {
     const user = await requireUser(request);
     const formData = await request.formData();
-    const wishlistName = requireFormDataValue('balloonName', formData);
+    const balloonName = requireFormDataValue('balloonName', formData);
     const guests = parseInt(requireFormDataValue('guests', formData));
     const startDate = requireFormDataValue('startDate', formData);
     const endDate = requireFormDataValue('endDate', formData);
-    const balloon = await createBalloon(user.id, wishlistName, guests, startDate, endDate);
+    const lat = parseFloat(requireFormDataValue('lat', formData));
+    const long = parseFloat(requireFormDataValue('long', formData));
+    const balloon = await createBalloon({
+        userId: user.id,
+        balloonName,
+        guests,
+        startDate,
+        endDate,
+        lat,
+        long,
+    });
     return redirect(`/balloons/${balloon.id}`);
 };
-const CreateWishlistPage = () => {
+const NewBalloonPage = () => {
     const { showModal } = useModal(true);
     const navigate = useNavigate();
     const toggleModal = () => {
@@ -72,7 +90,7 @@ const ParticipantsCounter = ({ startingValue }: { startingValue?: number }) => {
         </div>
     );
 };
-
+//TODO: Integrate map pick with start location
 export const BalloonForm = ({ balloon }: { balloon?: Balloon }) => {
     return (
         <Form className={'w-full'} method={'post'}>
@@ -88,12 +106,12 @@ export const BalloonForm = ({ balloon }: { balloon?: Balloon }) => {
                 </span>
                 <ParticipantsCounter startingValue={balloon?.guests} />
                 <span className={'leading-none'}>
-                    <p className={'text-gray-600 font-medium'}>Destination</p>
+                    <p className={'text-gray-600 font-medium'}>Starting location</p>
                     <p className={'text-sm text-gray-400 px-10'}>
-                        The destination is used for distance calculation
+                        The starting location is used for distance calculation
                     </p>
                 </span>
-                <MapComponent />
+                <BalloonMapComponent height={200}></BalloonMapComponent>
                 <span className={'leading-none'}>
                     <p className={'text-gray-600 font-medium'}>Travel dates</p>
                     <p className={'text-sm text-gray-400 px-10'}>
@@ -122,4 +140,45 @@ export const BalloonForm = ({ balloon }: { balloon?: Balloon }) => {
     );
 };
 
-export default CreateWishlistPage;
+const BalloonMapComponent = ({
+    height,
+    lat,
+    long,
+}: {
+    height: number;
+    lat?: number;
+    long?: number;
+}) => {
+    const [position, setPosition] = useState<{ lat: number; long: number }>({
+        long: long || 0,
+        lat: lat || 0,
+    });
+
+    const updateMarkerPosition = (markerPosition: LatLng) => {
+        setPosition({ lat: markerPosition.lat, long: markerPosition.lng });
+    };
+    const checkPosition = () => {
+        navigator.geolocation.getCurrentPosition((position) => {
+            setPosition({ lat: position.coords.latitude, long: position.coords.longitude });
+        });
+    };
+    useEffect(() => {
+        if (!lat && !long) {
+            checkPosition();
+        }
+    }, []);
+    return (
+        <div className={'flex-1 max-w-xl rounded-md'}>
+            <input type='hidden' name={'lat'} value={position.lat} />
+            <input type='hidden' name={'long'} value={position.long} />
+            <MapComponent
+                rounded={'xl'}
+                setPosition={updateMarkerPosition}
+                long={position.long}
+                lat={position.lat}
+                height={height}></MapComponent>
+        </div>
+    );
+};
+
+export default NewBalloonPage;

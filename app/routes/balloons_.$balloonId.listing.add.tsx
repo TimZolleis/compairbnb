@@ -5,10 +5,12 @@ import { DataFunctionArgs, redirect } from '@remix-run/node';
 import { requireUser } from '~/utils/auth/session.server';
 import { requireFormDataValue, requireParameter } from '~/utils/form/formdata.server';
 import { LoadingComponent } from '~/ui/components/loading/LoadingComponent';
-import { addListingToBalloon } from '~/models/listing.server';
 import { useState } from 'react';
 import { Toggle } from '~/ui/components/form/Toggle';
 import { updateBalloon } from '~/models/balloon.server';
+import { getOptionalBalloonFormValues } from '~/routes/balloons.$balloonId.edit';
+import { createListing } from '~/models/listing.server';
+import { BalloonDetailBadge } from '~/routes/balloons';
 
 function parseAirbnbLink(link: string) {
     const url = new URL(link);
@@ -25,16 +27,12 @@ export const action = async ({ request, params }: DataFunctionArgs) => {
     const balloonId = requireParameter('balloonId', params);
     const formData = await request.formData();
     const airbnbLink = requireFormDataValue('airbnbLink', formData);
-    const shouldUpdateBalloon = formData.get('updateBalloon');
-    if (shouldUpdateBalloon && shouldUpdateBalloon === 'true') {
-        const guestValue = formData.get('guests')?.toString();
-        const guests = guestValue ? parseInt(guestValue.toString()) : undefined;
-        const checkIn = formData.get('checkIn')?.toString();
-        const checkOut = formData.get('checkOut')?.toString();
-        await updateBalloon(balloonId, undefined, guests, checkIn, checkOut);
+    if (formData.get('updateBalloon')) {
+        const { balloonName, guests, startDate, endDate } = getOptionalBalloonFormValues(formData);
+        await updateBalloon({ balloonName, balloonId, guests, startDate, endDate });
     }
     const { listingId, searchParams } = parseAirbnbLink(airbnbLink);
-    const listing = await addListingToBalloon(balloonId, listingId);
+    const listing = await createListing({ balloonId, listingId });
     return redirect(`/balloons/${balloonId}`);
 };
 
@@ -74,16 +72,15 @@ const AddListingToBalloonPage = () => {
                                 <p className={'text-gray-600 font-medium'}>AirBNB Link</p>
                             </span>
                             <TextInput
+                                required={true}
                                 onChange={(event) => checkLink(event.target.value)}
                                 name={'airbnbLink'}
                                 placeholder={'https://airbnb.com/listings/123456'}></TextInput>
-                            <span className={'leading-none w-full flex justify-start py-2'}>
-                                <p className={'text-gray-600 font-medium'}>
-                                    Custom listing name (optional)
-                                </p>
-                            </span>
-                            <TextInput name={'listingName'} placeholder={'Fancy beach house'} />
-                            <div className={'flex items-center flex-wrap gap-2 mt-5'}>
+
+                            <div
+                                className={`flex items-center flex-wrap gap-2 ${
+                                    guests || checkIn || checkOut ? 'mt-3' : ''
+                                }`}>
                                 {guests ? (
                                     <DetectedValueComponent
                                         description={'Guests'}
@@ -107,7 +104,7 @@ const AddListingToBalloonPage = () => {
                                 ) : null}
                             </div>
 
-                            {guests || checkIn || checkOut ? (
+                            {guests || checkIn || !checkOut ? (
                                 <>
                                     <Label
                                         text={
@@ -151,11 +148,10 @@ const DetectedValueComponent = ({
     name: string;
 }) => {
     return (
-        <div className={'rounded-md py-2 px-5 shadow-md bg-white flex flex-col justify-center'}>
-            <p className={'font-medium text-sm'}>{description}</p>
-            <p className={'text-gray-600'}>{value}</p>
+        <>
+            <BalloonDetailBadge name={description} value={value} />
             <input type='hidden' name={name} value={value} />
-        </div>
+        </>
     );
 };
 

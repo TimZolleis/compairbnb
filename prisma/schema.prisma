@@ -11,17 +11,19 @@ datasource db {
 }
 
 model Balloon {
-  id                String    @id @default(uuid())
-  ownerId           String
-  owner             User      @relation(fields: [ownerId], references: [id])
-  name              String
-  guests            Int
-  startLocationLat  Float?
-  startLocationLong Float?
-  startLocationName String?
-  listings          Listing[]
-  startDate         String
-  endDate           String
+  id           String    @id @default(uuid())
+  ownerId      String
+  owner        User      @relation(fields: [ownerId], references: [id])
+  name         String
+  guests       Int
+  lat          Float
+  long         Float
+  locationName String
+  listings     Listing[]
+  startDate    String
+  endDate      String
+
+  @@unique([id, ownerId])
 }
 
 model User {
@@ -34,13 +36,11 @@ model User {
 
 model Listing {
   id                String  @id
-  customName        String?
   name              String
-  latestDistance    Float
-  startLocationHash String
   thumbnailImageUrl String
   lat               Float
   long              Float
+  distance          Float?
   locationName      String
   balloonId         String
   balloon           Balloon @relation(fields: [balloonId], references: [id])

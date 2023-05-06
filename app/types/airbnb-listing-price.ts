@@ -339,7 +339,7 @@ interface PrimaryLine {
 
 interface ExplanationData {
     __typename: string;
-    title: any;
+    title?: any;
     priceDetails: PriceDetail[];
 }
 
