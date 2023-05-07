@@ -1,41 +1,47 @@
 import { DataFunctionArgs, defer } from '@remix-run/node';
-import { requireUser } from '~/utils/auth/session.server';
-import { Await, Form, Link, Outlet, useLoaderData, useNavigation } from '@remix-run/react';
+import {
+    Await,
+    Form,
+    isRouteErrorResponse,
+    Link,
+    Outlet,
+    useLoaderData,
+    useNavigation,
+    useRouteError,
+} from '@remix-run/react';
 import { NoItemsComponent } from '~/ui/components/error/NoItemsComponent';
 import { HouseIllustration } from '~/ui/illustrations/HouseIllustration';
-import { deleteListing } from '~/models/listing.server';
-import { Listing } from '.prisma/client';
+import { deleteListing, requireResult } from '~/models/listing.server';
+import { Balloon, Listing, Tag } from '.prisma/client';
 import { BalloonDetailsComponent } from '~/routes/balloons';
 import { PageHeader } from '~/ui/components/common/PageHeader';
 import { CloseIcon } from '~/ui/icons/CloseIcon';
 import { requireParameter } from '~/utils/form/formdata.server';
 import { prisma } from '../../prisma/db';
-import { EntityNotFoundException } from '~/exception/EntityNotFoundException';
 import { getListing } from '~/utils/axios/api/listing.server';
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { LoadingListingsComponentGrid } from '~/ui/components/loading/LoadingListingComponent';
-import { Tag } from '~/ui/components/common/Tag';
 import { LoadingSpinner } from '~/ui/components/loading/LoadingComponent';
+import { buttonVariants } from '~/ui/components/import/button';
+import { Badge } from '~/ui/components/common/Tag';
+import { tagColors } from '~/routes/balloons_.$balloonId.listing.$listingId';
+import { requireReadPermission, requireWritePermission } from '~/utils/auth/permission.server';
+import { Container } from '~/ui/components/common/Container';
+import { Card, CardHeader } from '~/ui/components/import/card';
+import { ErrorComponent } from '~/ui/components/error/ErrorComponent';
+import { Share } from 'lucide-react';
 
 export const loader = async ({ request, params }: DataFunctionArgs) => {
-    const user = await requireUser(request);
     const balloonId = requireParameter('balloonId', params);
     const balloon = await prisma.balloon
         .findUnique({
             where: {
-                id_ownerId: {
-                    ownerId: user.id,
-                    id: balloonId,
-                },
+                id: balloonId,
             },
         })
-        .then((balloon) => {
-            if (!balloon) {
-                throw new EntityNotFoundException('balloon');
-            }
-            return balloon;
-        });
-    const listings = await prisma.listing.findMany({ where: { balloon } });
+        .then(requireResult<Balloon>);
+    await requireReadPermission(request, { balloon });
+    const listings = await prisma.listing.findMany({ where: { balloon }, include: { tags: true } });
     const listingsWithDetails = Promise.all(
         listings.map(async (listing) => {
             const details = await getListing({
@@ -47,10 +53,12 @@ export const loader = async ({ request, params }: DataFunctionArgs) => {
             return { listing, details };
         })
     );
-    return defer({ length: listings.length, balloon, user, listingsWithDetails });
+    return defer({ length: listings.length, balloon, listingsWithDetails });
 };
 
-export const action = async ({ request }: DataFunctionArgs) => {
+export const action = async ({ request, params }: DataFunctionArgs) => {
+    const balloonId = requireParameter('balloonId', params);
+    await requireWritePermission(request, { balloonId });
     const formData = await request.formData();
     const listingId = formData.get('deleteListing')?.toString();
     if (listingId) {
@@ -60,24 +68,23 @@ export const action = async ({ request }: DataFunctionArgs) => {
 };
 
 const BalloonDetailsPage = () => {
-    const { balloon, length, user, listingsWithDetails } = useLoaderData<typeof loader>();
+    const { balloon, length, listingsWithDetails } = useLoaderData<typeof loader>();
     return (
         <>
             <span className={'flex items-center justify-between'}>
-                <PageHeader>{balloon.name}</PageHeader>
-                <span className={'flex items-center gap-2'}>
+                <div className={'flex items-center gap-2'}>
+                    <PageHeader>{balloon.name}</PageHeader>
                     <Link
-                        to={'edit'}
-                        className={
-                            'rounded-full border border-rose-500 bg-white py-2 px-5 font-medium text-rose-500'
-                        }>
+                        to={'share'}
+                        className={'bg-white rounded-full border border-gray-200 p-2'}>
+                        <Share size={18}></Share>
+                    </Link>
+                </div>
+                <span className={'flex items-center gap-2'}>
+                    <Link to={'edit'} className={buttonVariants({ variant: 'secondary' })}>
                         Edit Balloon
                     </Link>
-                    <Link
-                        to={'listing/add'}
-                        className={
-                            'rounded-full shadow-md bg-rose-500 py-2 px-5 font-medium text-white shadow-rose-500/30'
-                        }>
+                    <Link to={'listing/add'} className={buttonVariants()}>
                         Add Listing
                     </Link>
                 </span>
@@ -119,13 +126,11 @@ const ListingComponent = ({
     details,
     guests,
 }: {
-    listing: Listing;
+    listing: Listing & { tags: Tag[] };
     details: Awaited<ReturnType<typeof getListing>>;
     guests: number;
 }) => {
-    const link = `https://airbnb.com/rooms/${listing.id}`;
     const navigation = useNavigation();
-
     return (
         <>
             <div className={'relative w-72 transition hover:scale-105 ease-in-out duration-200'}>
@@ -164,9 +169,7 @@ const ListingComponent = ({
                     </div>
                     <span className={'flex gap-x-2 items-center'}>
                         <p className={'text-sm text-gray-600 truncate'}>{listing.name}</p>
-                        <Tag rounding={'normal'} color={'pink'}>
-                            {listing.distance?.toFixed(2) || 0}km
-                        </Tag>
+                        <Badge>{listing.distance?.toFixed(2) || 0}km</Badge>
                     </span>
                     <div className={'mt-1 flex items-center gap-x-2'}>
                         <p className={'font-medium'}>{details.pricing.totalPrice}</p>
@@ -181,6 +184,30 @@ const ListingComponent = ({
                             /person
                         </p>
                     </div>
+                    {listing.tags.length > 0 && (
+                        <div className={'flex items-center gap-x-2 mt-2'}>
+                            {listing.tags.slice(0, 2).map((tag) => (
+                                <Badge
+                                    key={tag.id}
+                                    style={{
+                                        backgroundColor: tag.color,
+                                    }}>
+                                    <p
+                                        style={{
+                                            color: tagColors.find((c) => c.color === tag.color)
+                                                ?.textColor,
+                                        }}>
+                                        {tag.value}
+                                    </p>
+                                </Badge>
+                            ))}
+                            {listing.tags.length > 2 && (
+                                <p className={'text-sm text-gray-400'}>
+                                    +{listing.tags.length - 2}
+                                </p>
+                            )}
+                        </div>
+                    )}
                 </Link>
             </div>
         </>
@@ -195,6 +222,16 @@ const RemovingLinkAnimation = () => {
             }>
             <LoadingSpinner color={'stroke-white'} />
         </div>
+    );
+};
+
+export const ErrorBoundary = () => {
+    const error = useRouteError();
+
+    return (
+        <>
+            <ErrorComponent error={error} />
+        </>
     );
 };
 

@@ -1,4 +1,4 @@
-import { Form, Link, useNavigate, useNavigation } from '@remix-run/react';
+import { Form, useNavigate, useNavigation } from '@remix-run/react';
 import { TextInput } from '~/ui/components/form/TextInput';
 import { DataFunctionArgs, LinksFunction, redirect } from '@remix-run/node';
 import { requireUser } from '~/utils/auth/session.server';
@@ -6,12 +6,13 @@ import { requireFormDataValue } from '~/utils/form/formdata.server';
 import { createBalloon } from '~/models/balloon.server';
 import { useEffect, useState } from 'react';
 import { Modal, useModal } from '~/ui/components/modal/Modal';
-import { PlusIcon } from '~/ui/icons/PlusIcon';
-import { MinusIcon } from '~/ui/icons/MinusIcon';
 import { Balloon } from '.prisma/client';
 import { LatLng } from 'leaflet';
 import { MapComponent } from '~/ui/components/map/MapComponent';
 import { LoadingSpinner } from '~/ui/components/loading/LoadingComponent';
+import { Loader2, Minus, Plus, Users2 } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Button } from '~/ui/components/import/button';
 
 export const links: LinksFunction = () => [
     {
@@ -41,7 +42,6 @@ export const action = async ({ request }: DataFunctionArgs) => {
     return redirect(`/balloons/${balloon.id}`);
 };
 const NewBalloonPage = () => {
-    const { showModal } = useModal(true);
     const navigate = useNavigate();
     const toggleModal = () => {
         navigate('/');
@@ -58,7 +58,7 @@ const NewBalloonPage = () => {
 };
 
 const ParticipantsCounter = ({ startingValue }: { startingValue?: number }) => {
-    const [count, setCount] = useState(startingValue ? startingValue : 0);
+    const [count, setCount] = useState(startingValue ? startingValue : 1);
 
     const reduceCount = () => {
         if (count >= 2) {
@@ -70,56 +70,54 @@ const ParticipantsCounter = ({ startingValue }: { startingValue?: number }) => {
     };
 
     return (
-        <div className={'rounded-full bg-white px-5 py-2 border flex items-center justify-center'}>
-            <div className={'flex items-center gap-3'}>
+        <div className='flex items-center space-x-4 rounded-md border p-4 justify-between select-none'>
+            <div className={'flex items-center space-x-4'}>
+                <Users2 />
+                <div className='flex-1 space-y-1'>
+                    <p className='text-sm font-medium leading-none'>Guests</p>
+                    <p className='text-sm text-muted-foreground'>Select a number</p>
+                </div>
+            </div>
+            <div className={'flex items-center space-x-4'}>
                 <span
-                    className={
-                        'rounded-full p-1 border border-gray-300 flex justify-center items-center'
-                    }>
-                    <MinusIcon size={'sm'} hover={'pointer'} onClick={reduceCount} />
+                    className={'rounded-full p-1 border-gray-200 border hover:cursor-pointer'}
+                    onClick={reduceCount}>
+                    <Minus size={20}></Minus>
                 </span>
-
-                <p className={'font-semibold text-gray-600 text-xl pointer-events-none'}>{count}</p>
-                <input type={'hidden'} name={'guests'} value={count} />
+                <motion.p
+                    key={count}
+                    className={'font-medium text-lg'}
+                    initial={{ scale: 1.2 }}
+                    animate={{ scale: 1 }}>
+                    {count}
+                </motion.p>
+                <input type='hidden' value={count} name={'guests'} />
                 <span
-                    className={
-                        'rounded-full p-1 border border-gray-300 flex justify-center items-center'
-                    }>
-                    <PlusIcon onClick={increaseCount} size={'sm'} hover={'pointer'} />
+                    className={'rounded-full p-1 border-gray-200 border hover:cursor-pointer'}
+                    onClick={increaseCount}>
+                    <Plus size={20}></Plus>
                 </span>
             </div>
         </div>
     );
 };
-//TODO: Integrate map pick with start location
 export const BalloonForm = ({ balloon }: { balloon?: Balloon }) => {
     const navigation = useNavigation();
+    const navigate = useNavigate();
     return (
-        <Form className={'w-full'} method={'post'}>
-            <div className={'grid gap-2'}>
+        <Form method={'post'}>
+            <div className={'space-y-2'}>
                 <TextInput
                     required={true}
                     placeholder={'Balloon name'}
                     name={'balloonName'}
                     defaultValue={balloon?.name}
                 />
-                <span className={'leading-none'}>
-                    <p className={'text-gray-600 font-medium'}>Guests</p>
-                </span>
+
                 <ParticipantsCounter startingValue={balloon?.guests} />
-                <span className={'leading-none'}>
-                    <p className={'text-gray-600 font-medium'}>Starting location</p>
-                    <p className={'text-sm text-gray-400 px-10'}>
-                        The starting location is used for distance calculation
-                    </p>
-                </span>
+                <p className='text-sm font-medium leading-none'>Starting location</p>
                 <BalloonMapComponent height={200}></BalloonMapComponent>
-                <span className={'leading-none'}>
-                    <p className={'text-gray-600 font-medium'}>Travel dates</p>
-                    <p className={'text-sm text-gray-400 px-10'}>
-                        Please enter the dates in the format "yyyy-mm-dd"
-                    </p>
-                </span>
+                <p className='text-sm font-medium leading-none'>Travel dates</p>
                 <span className={'grid md:grid-cols-2 gap-2'}>
                     <TextInput
                         name={'startDate'}
@@ -134,16 +132,21 @@ export const BalloonForm = ({ balloon }: { balloon?: Balloon }) => {
                         defaultValue={balloon?.endDate}
                     />
                 </span>
-                <button
-                    className={
-                        'rounded-md bg-rose-500 py-2 px-5 text-white font-medium mt-2 flex justify-center'
-                    }>
-                    {navigation.state === 'idle' ? (
-                        'Save'
-                    ) : (
-                        <LoadingSpinner size={'medium'} color={'stroke-white'} />
-                    )}
-                </button>
+                <span className={'flex justify-end gap-2'}>
+                    <Button type={'button'} onClick={() => navigate(-1)} variant={'ghost'}>
+                        Cancel
+                    </Button>
+                    <Button disabled={navigation.state === 'submitting'}>
+                        {navigation.state === 'submitting' ? (
+                            <>
+                                <p>Saving...</p>
+                                <Loader2 className={'h-4 w-4 animate-spin'}></Loader2>
+                            </>
+                        ) : (
+                            <p>Save</p>
+                        )}
+                    </Button>
+                </span>
             </div>
         </Form>
     );

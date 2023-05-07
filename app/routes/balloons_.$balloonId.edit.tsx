@@ -6,22 +6,27 @@ import { requireParameter } from '~/utils/form/formdata.server';
 import { updateBalloon } from '~/models/balloon.server';
 import { prisma } from '../../prisma/db';
 import { BalloonForm } from '~/routes/balloons.add';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '~/ui/components/import/card';
+import { requireReadPermission, requireWritePermission } from '~/utils/auth/permission.server';
 
 export const loader = async ({ request, params }: DataFunctionArgs) => {
-    const user = await requireUser(request);
     const balloonId = requireParameter('balloonId', params);
     const balloon = await prisma.balloon.findUnique({
         where: {
-            id_ownerId: {
-                id: balloonId,
-                ownerId: user.id,
-            },
+            id: balloonId,
         },
     });
+    await requireReadPermission(request, { balloon });
     if (!balloon) {
         throw new Error('The requested balloon could not be found');
     }
-    return json({ balloon, user });
+    return json({ balloon });
 };
 export const links: LinksFunction = () => [
     {
@@ -43,6 +48,7 @@ export function getOptionalBalloonFormValues(formData: FormData) {
 export const action = async ({ request, params }: DataFunctionArgs) => {
     const formData = await request.formData();
     const balloonId = requireParameter('balloonId', params);
+    await requireWritePermission(request, { balloonId });
     const { balloonName, guests, startDate, endDate, lat, long } =
         getOptionalBalloonFormValues(formData);
     const balloon = await updateBalloon({
@@ -58,7 +64,7 @@ export const action = async ({ request, params }: DataFunctionArgs) => {
 };
 
 const EditBalloonPage = () => {
-    const { balloon, user } = useLoaderData<typeof loader>();
+    const { balloon } = useLoaderData<typeof loader>();
     const { showModal } = useModal(true);
     const navigate = useNavigate();
     const toggleModal = () => {
@@ -67,12 +73,16 @@ const EditBalloonPage = () => {
 
     return (
         <Modal showModal={true} toggleModal={toggleModal}>
-            <main className={'w-full flex flex-col items-center gap-2 mt-10'}>
-                <h1 className={'font-semibold text-rose-500 text-2xl'}>
-                    Edit balloon: {balloon.name}
-                </h1>
-                <BalloonForm balloon={balloon} />
-            </main>
+            <Card className={'border-none shadow-none'}>
+                <CardHeader>
+                    <CardTitle>{balloon.name}</CardTitle>
+                    <CardDescription>Adjust your balloon settings</CardDescription>
+                </CardHeader>
+
+                <CardContent>
+                    <BalloonForm balloon={balloon} />
+                </CardContent>
+            </Card>
         </Modal>
     );
 };

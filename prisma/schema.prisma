@@ -44,4 +44,13 @@ model Listing {
   locationName      String
   balloonId         String
   balloon           Balloon @relation(fields: [balloonId], references: [id])
+  tags              Tag[]
+}
+
+model Tag {
+  id        String  @id @default(uuid())
+  listingId String
+  listing   Listing @relation(fields: [listingId], references: [id])
+  value     String
+  color     String
 }

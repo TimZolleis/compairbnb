@@ -4,23 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b9e88dae-dedd-4ce1-9bfa-17ee84bf83e8" name="Changes" comment="clean up and add map">
-      <change afterPath="$PROJECT_DIR$/app/routes/api.balloons.$balloonId.distance.calculate.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/types/bing-maps/bing-maps-route-d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+    <list default="true" id="b9e88dae-dedd-4ce1-9bfa-17ee84bf83e8" name="Changes" comment="add listing details and distance">
+      <change afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.share.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routes/share.$code.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/ui/components/error/ErrorComponent.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/ui/components/form/TextArea.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/auth/permission.server.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/encryption/encryption.server.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6928a396-c412-487c-bfb8-063e61f37cf0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6928a396-c412-487c-bfb8-063e61f37cf0.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/balloon.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/balloon.server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/listing.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/listing.server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/api.price.$listingId.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/balloons.$balloonId.edit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons.$balloonId.edit.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/_index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/_index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/api.balloons.$balloonId.distance.calculate.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons.$balloonId.edit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.edit.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/balloons.add.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons.add.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.add.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.add.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/tailwind.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/tailwind.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/common/PageHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/components/common/PageHeader.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/ui/components/common/Tag.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/components/common/Tag.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui/components/loading/LoadingComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/components/loading/LoadingComponent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui/components/loading/LoadingListingComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/components/loading/LoadingListingComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/form/TextInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/components/form/TextInput.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/ui/components/modal/Modal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/components/modal/Modal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/utils/map/distance.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/map/distance.server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,34 +66,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/tim/IdeaProjects/compairbnb&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;C:\\Users\\tim\\IdeaProjects\\compairbnb\\node_modules\\prettier&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\tim\\IdeaProjects\\compairbnb\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/tim/IdeaProjects/compairbnb/app/routes",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "C:\\Users\\tim\\IdeaProjects\\compairbnb\\node_modules\\prettier",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "ts.external.directory.path": "C:\\Users\\tim\\IdeaProjects\\compairbnb\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mariadb&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mariadb"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\tim\IdeaProjects\compairbnb\app\routes" />
       <recent name="C:\Users\tim\IdeaProjects\react-leaflet-example\public\resources" />
     </key>
   </component>
@@ -106,7 +118,11 @@
       <workItem from="1683220893418" duration="4824000" />
       <workItem from="1683225740212" duration="11039000" />
       <workItem from="1683368107984" duration="12952000" />
-      <workItem from="1683400014170" duration="8521000" />
+      <workItem from="1683400014170" duration="8639000" />
+      <workItem from="1683452500924" duration="4728000" />
+      <workItem from="1683465474059" duration="556000" />
+      <workItem from="1683467472986" duration="579000" />
+      <workItem from="1683471382635" duration="17330000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1683058528623</created>
@@ -136,7 +152,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683380368834</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="add listing details and distance">
+      <created>1683408725035</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1683408725035</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -147,7 +170,8 @@
     <MESSAGE value="change a lot - mostly ui and api calls" />
     <MESSAGE value="change a lot and add map" />
     <MESSAGE value="clean up and add map" />
-    <option name="LAST_COMMIT_MESSAGE" value="clean up and add map" />
+    <MESSAGE value="add listing details and distance" />
+    <option name="LAST_COMMIT_MESSAGE" value="add listing details and distance" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

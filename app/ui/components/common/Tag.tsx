@@ -1,50 +1,34 @@
-import { cva, VariantProps } from 'class-variance-authority';
-import { ReactNode } from 'react';
+import * as React from 'react';
+import { VariantProps, cva } from 'class-variance-authority';
+import { cn } from '~/utils/utils';
 
-const tag = cva('px-3 py-1 leading-none', {
-    variants: {
-        color: {
-            green: 'bg-green-500/30 text-green-500',
-            red: 'bg-red-500/30 text-red-500',
-            fuchsia: 'bg-fuchsia-500/30 text-fuchsia-500',
-            amber: 'bg-amber-500/30 text-amber-500',
-            pink: 'bg-pink-500/30 text-pink-500',
-            'solid-green': 'bg-green-500 text-white ',
-            'solid-red': 'bg-red-500 text-white ',
-            'solid-fuchsia': 'bg-fuchsia-500 text-white ',
-            'solid-amber': 'bg-amber-500 text-white ',
+const badgeVariants = cva(
+    'inline-flex items-center border rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+    {
+        variants: {
+            variant: {
+                default:
+                    'bg-primary hover:bg-primary/80 border-transparent text-primary-foreground',
+                secondary:
+                    'bg-secondary hover:bg-secondary/80 border-transparent text-secondary-foreground',
+                destructive:
+                    'bg-destructive hover:bg-destructive/80 border-transparent text-destructive-foreground',
+                positive: 'bg-green-600 hover:bg-green-600/80 border-transparent text-white',
+                outline: 'text-foreground',
+            },
         },
-        text: {
-            xs: 'text-xs',
-            sm: 'text-sm',
-            normal: 'text-base',
+        defaultVariants: {
+            variant: 'default',
         },
-        rounding: {
-            full: 'rounded-full',
-            medium: 'rounded-md',
-            normal: 'rounded',
-            large: 'rounded-lg',
-            small: 'rounded-sm',
-        },
-        font: {
-            medium: 'font-medium',
-        },
-    },
-    defaultVariants: {
-        color: 'solid-green',
-        text: 'xs',
-        rounding: 'full',
-    },
-});
+    }
+);
 
-interface TagProps extends VariantProps<typeof tag> {
-    children: ReactNode | string;
+export interface BadgeProps
+    extends React.HTMLAttributes<HTMLDivElement>,
+        VariantProps<typeof badgeVariants> {}
+
+function Badge({ className, variant, ...props }: BadgeProps) {
+    return <div className={cn(badgeVariants({ variant }), className)} {...props} />;
 }
 
-export const Tag = ({ children, color, text, rounding }: TagProps) => {
-    return (
-        <div className={'flex items-center'}>
-            <div className={tag({ color, text, rounding })}>{children}</div>
-        </div>
-    );
-};
+export { Badge, badgeVariants };

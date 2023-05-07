@@ -1,15 +1,7 @@
-import type { DataFunctionArgs, V2_MetaFunction } from '@remix-run/node';
-import { requireUser } from '~/utils/auth/session.server';
-import { json } from '@remix-run/node';
-import { Link, Outlet, useLoaderData } from '@remix-run/react';
-import { NoItemsComponent } from '~/ui/components/error/NoItemsComponent';
-import { getListing } from '~/utils/axios/api/listing.server';
-import { getUserBalloons } from '~/models/balloon.server';
-import { BalloonIllustration } from '~/ui/illustrations/BalloonIllustration';
+import type { V2_MetaFunction } from '@remix-run/node';
+import { Link } from '@remix-run/react';
 import { ChevronUpIcon } from '~/ui/icons/ChevronUpIcon';
-import { Container } from '~/ui/components/common/Container';
 import { useOptionalUser } from '~/utils/hooks/user';
-import { UserMenuComponent } from '~/ui/components/user/UserMenuComponent';
 
 export const meta: V2_MetaFunction = () => {
     return [{ title: 'React leaflet example' }];
@@ -35,7 +27,7 @@ const GetStartedComponent = () => {
         <Link
             to={user ? '/balloons' : '/login'}
             className={
-                'rounded-full px-5 bg-white py-2 border border-neutral-200 text-gray-600 font-medium text-sm flex items-center gap-2'
+                'rounded-full px-5 bg-white py-2 border border-neutral-200 text-gray-600 font-medium text-sm flex items-center gap-2 font-sans'
             }>
             <p>Get started comparing your airbnbs right away</p>
             <ChevronUpIcon direction={'right'}></ChevronUpIcon>
