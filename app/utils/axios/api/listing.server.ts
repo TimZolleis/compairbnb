@@ -3,7 +3,7 @@ import { GPStaysDeferredSections } from '~/types/airbnb-listing-price';
 import { ListingDetails } from '~/types/airbnb-listing-details';
 import { ListingAvailability } from '~/types/airbnb-listing-availability';
 
-function getClient(baseUrl?: string) {
+export function getClient(baseUrl?: string) {
     return axios.create({
         baseURL: baseUrl,
         headers: {
@@ -126,7 +126,6 @@ export async function getListingPrice({
             operationName: 'GPStaysDeferredSections',
         },
     });
-    console.log('Pricing response', response.data);
     const bookingSection =
         response.data.data?.presentation?.stayProductDetailPage?.sections?.sections?.find(
             (section) => section.sectionId === 'BOOK_IT_FLOATING_FOOTER'
@@ -140,7 +139,12 @@ export async function getListingPrice({
     return { totalPrice };
 }
 
-function createListingArguments({ guests, checkIn, checkOut, listingId }: ListingDetailsProps) {
+export function createListingArguments({
+    guests,
+    checkIn,
+    checkOut,
+    listingId,
+}: ListingDetailsProps) {
     const listingOptions = {
         id: encodeListingId(listingId),
         request: {
