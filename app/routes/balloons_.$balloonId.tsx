@@ -91,7 +91,9 @@ const BalloonDetailsPage = () => {
             </span>
             <BalloonDetailsComponent balloon={balloon} />
             <Suspense fallback={<LoadingListingsComponentGrid length={length} />}>
-                <Await resolve={listingsWithDetails}>
+                <Await
+                    resolve={listingsWithDetails}
+                    errorElement={'An error occurred with suspense 1'}>
                     {(listings) =>
                         listings.length > 0 ? (
                             <div className={'mt-5 inline-flex gap-5 flex-wrap'}>
