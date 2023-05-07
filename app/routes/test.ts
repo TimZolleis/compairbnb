@@ -30,6 +30,6 @@ export const loader = async () => {
         );
 
     const totalPrice = totalPriceDetail?.items[0]?.priceString || '0';
-    console.log(response.request.headers);
+    console.log(response.request);
     return json({ response: response.data });
 };
