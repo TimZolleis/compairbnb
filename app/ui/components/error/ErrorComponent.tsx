@@ -1,4 +1,3 @@
-import { Container } from '~/ui/components/common/Container';
 import {
     Card,
     CardContent,

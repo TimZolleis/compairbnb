@@ -126,6 +126,7 @@ export async function getListingPrice({
             operationName: 'GPStaysDeferredSections',
         },
     });
+    console.log('Pricing response', response.data);
     const bookingSection =
         response.data.data?.presentation?.stayProductDetailPage?.sections?.sections?.find(
             (section) => section.sectionId === 'BOOK_IT_FLOATING_FOOTER'
