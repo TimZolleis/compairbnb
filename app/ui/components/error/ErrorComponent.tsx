@@ -10,6 +10,7 @@ import { isRouteErrorResponse, Link } from '@remix-run/react';
 import { buttonVariants } from '~/ui/components/import/button';
 
 export const ErrorComponent = ({ error }: { error: unknown }) => {
+    console.log('Error', error);
     return (
         <Card>
             <CardHeader>
