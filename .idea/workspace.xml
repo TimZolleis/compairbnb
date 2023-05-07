@@ -4,33 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b9e88dae-dedd-4ce1-9bfa-17ee84bf83e8" name="Changes" comment="add listing details and distance">
-      <change afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.share.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/routes/share.$code.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/ui/components/error/ErrorComponent.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/ui/components/form/TextArea.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/utils/auth/permission.server.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/utils/encryption/encryption.server.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/utils/utils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6928a396-c412-487c-bfb8-063e61f37cf0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6928a396-c412-487c-bfb8-063e61f37cf0.xml" afterDir="false" />
+    <list default="true" id="b9e88dae-dedd-4ce1-9bfa-17ee84bf83e8" name="Changes" comment="add ui and make everything work">
+      <change afterPath="$PROJECT_DIR$/app/routes/reset.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/balloon.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/balloon.server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/_index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/_index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/api.balloons.$balloonId.distance.calculate.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/balloons.$balloonId.edit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.edit.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/balloons.add.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons.add.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.add.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.add.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/tailwind.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/tailwind.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui/components/common/PageHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/components/common/PageHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui/components/common/Tag.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/components/common/Tag.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui/components/form/TextInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/components/form/TextInput.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/ui/components/modal/Modal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/components/modal/Modal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,8 +23,8 @@
       <list>
         <option value="Dockerfile" />
         <option value="tsconfig.json" />
-        <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -122,7 +100,7 @@
       <workItem from="1683452500924" duration="4728000" />
       <workItem from="1683465474059" duration="556000" />
       <workItem from="1683467472986" duration="579000" />
-      <workItem from="1683471382635" duration="17330000" />
+      <workItem from="1683471382635" duration="17740000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1683058528623</created>
@@ -159,7 +137,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683408725035</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="add ui and make everything work">
+      <created>1683493181185</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1683493181185</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -171,7 +156,8 @@
     <MESSAGE value="change a lot and add map" />
     <MESSAGE value="clean up and add map" />
     <MESSAGE value="add listing details and distance" />
-    <option name="LAST_COMMIT_MESSAGE" value="add listing details and distance" />
+    <MESSAGE value="add ui and make everything work" />
+    <option name="LAST_COMMIT_MESSAGE" value="add ui and make everything work" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
