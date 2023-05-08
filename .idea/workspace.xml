@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b9e88dae-dedd-4ce1-9bfa-17ee84bf83e8" name="Changes" comment="add ui and make everything work">
-      <change afterPath="$PROJECT_DIR$/app/routes/reset.ts" afterDir="false" />
+    <list default="true" id="b9e88dae-dedd-4ce1-9bfa-17ee84bf83e8" name="Changes" comment="test6">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -100,7 +98,7 @@
       <workItem from="1683452500924" duration="4728000" />
       <workItem from="1683465474059" duration="556000" />
       <workItem from="1683467472986" duration="579000" />
-      <workItem from="1683471382635" duration="17740000" />
+      <workItem from="1683471382635" duration="20075000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1683058528623</created>
@@ -144,7 +142,56 @@
       <option name="project" value="LOCAL" />
       <updated>1683493181185</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="fix prisma build">
+      <created>1683493470313</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1683493470313</updated>
+    </task>
+    <task id="LOCAL-00008" summary="test">
+      <created>1683493926097</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1683493926097</updated>
+    </task>
+    <task id="LOCAL-00009" summary="test2">
+      <created>1683493968555</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1683493968555</updated>
+    </task>
+    <task id="LOCAL-00010" summary="test3">
+      <created>1683494096424</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1683494096424</updated>
+    </task>
+    <task id="LOCAL-00011" summary="test4">
+      <created>1683494491263</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1683494491263</updated>
+    </task>
+    <task id="LOCAL-00012" summary="test5">
+      <created>1683494939404</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1683494939404</updated>
+    </task>
+    <task id="LOCAL-00013" summary="test6">
+      <created>1683495045860</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1683495045860</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -157,7 +204,14 @@
     <MESSAGE value="clean up and add map" />
     <MESSAGE value="add listing details and distance" />
     <MESSAGE value="add ui and make everything work" />
-    <option name="LAST_COMMIT_MESSAGE" value="add ui and make everything work" />
+    <MESSAGE value="fix prisma build" />
+    <MESSAGE value="test" />
+    <MESSAGE value="test2" />
+    <MESSAGE value="test3" />
+    <MESSAGE value="test4" />
+    <MESSAGE value="test5" />
+    <MESSAGE value="test6" />
+    <option name="LAST_COMMIT_MESSAGE" value="test6" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
