@@ -30,6 +30,7 @@ function parseAirbnbLink(link: string) {
 }
 
 export const action = async ({ request, params }: DataFunctionArgs) => {
+    const sort = new URL(request.url).searchParams.get('sort');
     const balloonId = requireParameter('balloonId', params);
     await requireWritePermission(request, { balloonId });
     const formData = await request.formData();
@@ -40,7 +41,7 @@ export const action = async ({ request, params }: DataFunctionArgs) => {
     }
     const { listingId, searchParams } = parseAirbnbLink(airbnbLink);
     const listing = await createListing({ balloonId, listingId });
-    return redirect(`/balloons/${balloonId}`);
+    return redirect(`/balloons/${balloonId}?sort=${sort}`);
 };
 
 const AddListingToBalloonPage = () => {
