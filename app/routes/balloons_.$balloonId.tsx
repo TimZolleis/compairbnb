@@ -136,8 +136,8 @@ const BalloonDetailsPage = () => {
                 </span>
             </span>
             <div className={'flex items-center gap-2 flex-wrap pt-2'}>
-                {/*<BalloonDetailsComponent balloon={balloon} />*/}
-                {/*<SortingComponent />*/}
+                <BalloonDetailsComponent balloon={balloon} />
+                <SortingComponent />
             </div>
             <Suspense fallback={<LoadingListingsComponentGrid length={length} />}>
                 <Await
