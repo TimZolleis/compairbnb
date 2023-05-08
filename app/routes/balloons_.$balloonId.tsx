@@ -114,7 +114,7 @@ export const action = async ({ request, params }: DataFunctionArgs) => {
 
 const BalloonDetailsPage = () => {
     const { balloon, length, listingsWithDetails } = useLoaderData<typeof loader>();
-
+    const [searchParams] = useSearchParams();
     return (
         <>
             <span className={'flex flex-wrap items-center justify-between'}>
@@ -127,10 +127,14 @@ const BalloonDetailsPage = () => {
                     </Link>
                 </div>
                 <span className={'flex items-center gap-2'}>
-                    <Link to={'edit'} className={buttonVariants({ variant: 'secondary' })}>
+                    <Link
+                        to={{ pathname: 'edit', search: searchParams.toString() }}
+                        className={buttonVariants({ variant: 'secondary' })}>
                         Edit
                     </Link>
-                    <Link to={'listing/add'} className={buttonVariants()}>
+                    <Link
+                        to={{ pathname: 'listing/add', search: searchParams.toString() }}
+                        className={buttonVariants()}>
                         Add
                     </Link>
                 </span>

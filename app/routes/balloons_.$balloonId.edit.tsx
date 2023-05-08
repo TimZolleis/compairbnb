@@ -65,10 +65,9 @@ export const action = async ({ request, params }: DataFunctionArgs) => {
 
 const EditBalloonPage = () => {
     const { balloon } = useLoaderData<typeof loader>();
-    const { showModal } = useModal(true);
     const navigate = useNavigate();
     const toggleModal = () => {
-        navigate('/');
+        navigate(-1);
     };
 
     return (

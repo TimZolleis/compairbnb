@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b9e88dae-dedd-4ce1-9bfa-17ee84bf83e8" name="Changes" comment="test6">
+    <list default="true" id="b9e88dae-dedd-4ce1-9bfa-17ee84bf83e8" name="Changes" comment="add details - forgot to comment in">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/root.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/root.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/_index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/_index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.edit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.edit.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -47,33 +50,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/tim/IdeaProjects/compairbnb/app/routes",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "prettierjs.PrettierConfiguration.Package": "C:\\Users\\tim\\IdeaProjects\\compairbnb\\node_modules\\prettier",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "ts.external.directory.path": "C:\\Users\\tim\\IdeaProjects\\compairbnb\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/tim/IdeaProjects/compairbnb/app/routes&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;C:\\Users\\tim\\IdeaProjects\\compairbnb\\node_modules\\prettier&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\tim\\IdeaProjects\\compairbnb\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mariadb"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mariadb&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\tim\IdeaProjects\compairbnb\app\routes" />
@@ -104,6 +107,8 @@
       <workItem from="1683465474059" duration="556000" />
       <workItem from="1683467472986" duration="579000" />
       <workItem from="1683471382635" duration="20075000" />
+      <workItem from="1683574903113" duration="254000" />
+      <workItem from="1683575709822" duration="146000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1683058528623</created>
@@ -203,7 +208,28 @@
       <option name="project" value="LOCAL" />
       <updated>1683574295773</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="add truncate">
+      <created>1683574464314</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1683574464314</updated>
+    </task>
+    <task id="LOCAL-00016" summary="add dependency">
+      <created>1683574663274</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1683574663274</updated>
+    </task>
+    <task id="LOCAL-00017" summary="add details - forgot to comment in">
+      <created>1683574927148</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1683574927148</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -246,7 +272,10 @@
     <MESSAGE value="test5" />
     <MESSAGE value="test6" />
     <MESSAGE value="add sorting and fix mobile design" />
-    <option name="LAST_COMMIT_MESSAGE" value="add sorting and fix mobile design" />
+    <MESSAGE value="add truncate" />
+    <MESSAGE value="add dependency" />
+    <MESSAGE value="add details - forgot to comment in" />
+    <option name="LAST_COMMIT_MESSAGE" value="add details - forgot to comment in" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

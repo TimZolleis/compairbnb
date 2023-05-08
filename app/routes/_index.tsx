@@ -4,7 +4,7 @@ import { ChevronUpIcon } from '~/ui/icons/ChevronUpIcon';
 import { useOptionalUser } from '~/utils/hooks/user';
 
 export const meta: V2_MetaFunction = () => {
-    return [{ title: 'React leaflet example' }];
+    return [{ title: 'compairbnb | home' }];
 };
 
 export default function Index() {

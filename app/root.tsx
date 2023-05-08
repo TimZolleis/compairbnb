@@ -12,10 +12,12 @@ import stylesheet from '~/tailwind.css';
 import type { DataFunctionArgs, LinksFunction } from '@remix-run/node';
 import { AppLayout } from '~/ui/Layout/AppLayout';
 import { getUser } from '~/utils/auth/session.server';
-import { json } from '@remix-run/node';
+import { json, V2_MetaFunction } from '@remix-run/node';
 
 export const links: LinksFunction = () => [{ rel: 'stylesheet', href: stylesheet }];
-
+export const meta: V2_MetaFunction = () => {
+    return [{ title: 'compairbnb' }];
+};
 export const loader = async ({ request }: DataFunctionArgs) => {
     const user = await getUser(request);
     return json({ user });
