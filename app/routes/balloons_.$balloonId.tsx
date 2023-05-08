@@ -145,7 +145,7 @@ const BalloonDetailsPage = () => {
                     errorElement={'An error occurred with suspense 1'}>
                     {(listings) =>
                         listings.length > 0 ? (
-                            <div className={'mt-5 inline-flex gap-5 flex-wrap'}>
+                            <div className={'mt-5 flex gap-5 flex-wrap'}>
                                 {listings.map((listing) => (
                                     <ListingComponent
                                         guests={balloon.guests}
@@ -188,7 +188,7 @@ const ListingComponent = ({
         <>
             <div
                 className={
-                    'relative w-full md:w-72 transition hover:scale-105 ease-in-out duration-200'
+                    'relative w-full md:w-72 transition hover:scale-105 ease-in-out duration-200 min-w-0'
                 }>
                 {navigation.formData?.get('deleteListing') === listing.id && (
                     <RemovingLinkAnimation />
@@ -224,7 +224,9 @@ const ListingComponent = ({
                         <p className={'font-medium'}>{listing.locationName}</p>
                     </div>
                     <div className={'flex gap-x-2 items-center max-w-full'}>
-                        <div className={'text-sm text-gray-600 min-w-0'}>{listing.name}</div>
+                        <div className={'text-sm text-gray-600 min-w-0 truncate'}>
+                            {listing.name}
+                        </div>
                         <Badge>{listing.distance?.toFixed(2) || 0}km</Badge>
                     </div>
                     <div className={'mt-1 flex items-center gap-x-2'}>
