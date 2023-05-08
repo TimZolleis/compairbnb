@@ -4,11 +4,14 @@ import { UserMenuComponent } from '~/ui/components/user/UserMenuComponent';
 import { Link } from '@remix-run/react';
 export const AppLayout = ({ children, user }: { children: ReactNode; user?: User }) => {
     return (
-        <main className={'bg-gradient-to-b from-transparent to-white bg-background-start/40'}>
-            <div className={'w-full bg-white bg-opacity-75 py-5 px-10 border-b border-grey-500 '}>
+        <main
+            className={
+                'bg-gradient-to-b from-transparent to-white bg-background-start/40 relative'
+            }>
+            <div className={' bg-white bg-opacity-75 py-5 px-5 md:px-10 border-b border-grey-500 '}>
                 <NavBar user={user} />
             </div>
-            <section className={'px-10 mt-5'}>{children}</section>
+            <section className={'px-5 md:px-10 mt-5'}>{children}</section>
         </main>
     );
 };

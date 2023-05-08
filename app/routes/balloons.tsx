@@ -82,7 +82,7 @@ export const BalloonDetailsComponent = ({ balloon }: { balloon: Balloon }) => {
         return Math.floor(diff / (1000 * 60 * 60 * 24));
     };
     return (
-        <div className={'mt-2 flex items-center gap-2 flex-wrap'}>
+        <div className={'flex items-center gap-2 flex-wrap'}>
             <BalloonDetailBadge name={'Guests'} value={balloon.guests.toString()} />
             <BalloonDetailBadge name={'Start date'} value={balloon.startDate.toString()} />
             <BalloonDetailBadge name={'End date'} value={balloon.endDate.toString()} />

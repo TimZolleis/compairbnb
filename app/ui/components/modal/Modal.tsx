@@ -88,7 +88,7 @@ export const Modal = ({ showModal, toggleModal, children, width }: ModalProps) =
                             exit={{ y: 500, opacity: 0 }}
                             onClick={(e) => e.stopPropagation()}
                             className={modal({ width })}>
-                            <div className={'px-5 py-5'}>{children}</div>
+                            <div className={'md:px-5 md:py-5'}>{children}</div>
                         </motion.section>
                     </motion.div>
                 ) : null}

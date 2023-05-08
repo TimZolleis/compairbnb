@@ -30,7 +30,7 @@ export default function App() {
                 <Meta />
                 <Links />
             </head>
-            <body>
+            <body className={'block'}>
                 <AppLayout user={user}>
                     <Outlet />
                     <ScrollRestoration />

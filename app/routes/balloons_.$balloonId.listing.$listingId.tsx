@@ -11,7 +11,7 @@ import { DataFunctionArgs, defer } from '@remix-run/node';
 import { requireParameter } from '~/utils/form/formdata.server';
 import { prisma } from '../../prisma/db';
 import { requireUser } from '~/utils/auth/session.server';
-import { getListing } from '~/utils/axios/api/listing.server';
+import { getListing, getListingDetails } from '~/utils/axios/api/listing.server';
 import { requireResult } from '~/models/listing.server';
 import { Balloon, Listing, Tag } from '.prisma/client';
 import React, { Suspense, useEffect, useRef, useState } from 'react';
@@ -28,6 +28,9 @@ import { ExternalLink, Loader2, X } from 'lucide-react';
 import { TextInput } from '~/ui/components/form/TextInput';
 import { cn } from '~/utils/utils';
 import { requireReadPermission, requireWritePermission } from '~/utils/auth/permission.server';
+import { ListingDetails } from '~/types/airbnb-listing-details';
+import { element } from 'prop-types';
+import { AnimatePresence, motion, wrap } from 'framer-motion';
 
 type ListingWithTags = Listing & { tags: Tag[] };
 
@@ -40,7 +43,7 @@ export const loader = async ({ request, params }: DataFunctionArgs) => {
         })
         .then(requireResult<Balloon>);
     await requireReadPermission(request, { balloon });
-    const details = getListing({
+    const bookingDetails = getListing({
         guests: balloon.guests,
         checkIn: balloon.startDate,
         checkOut: balloon.endDate,
@@ -49,8 +52,15 @@ export const loader = async ({ request, params }: DataFunctionArgs) => {
     const listing = prisma.listing
         .findUnique({ where: { id: listingId }, include: { tags: true } })
         .then(requireResult<ListingWithTags>);
+    const listingDetails = getListingDetails(listingId);
 
-    return defer({ details, listing, balloon });
+    const listingWithDetailsAndBookingDetailsPromise = Promise.all([
+        listing,
+        bookingDetails,
+        listingDetails,
+    ]);
+
+    return defer({ balloon, listingWithDetailsAndBookingDetailsPromise });
 };
 
 export const action = async ({ request, params }: DataFunctionArgs) => {
@@ -87,107 +97,128 @@ export const action = async ({ request, params }: DataFunctionArgs) => {
 
 const ListingDetailsComponent = () => {
     const navigate = useNavigate();
-    const { details, listing, balloon } = useLoaderData<typeof loader>();
+    const { balloon, listingWithDetailsAndBookingDetailsPromise } = useLoaderData<typeof loader>();
 
     return (
         <Modal width={'4xl'} showModal={true} toggleModal={() => navigate(-1)}>
-            <div className={'flex'}>
+            <div className={'flex flex-col md:flex-row'}>
                 <Suspense
                     fallback={
-                        <div className={'flex gap-5'}>
+                        <div className={'flex flex-col md:flex-row gap-5'}>
                             <div className={'bg-gray-200 w-96 h-64 rounded-xl animate-pulse'}></div>
                             <LoadingListingDetailsComponent />
                         </div>
                     }>
-                    <Await resolve={listing}>
-                        {(listingResult) => (
+                    <Await resolve={listingWithDetailsAndBookingDetailsPromise}>
+                        {([listing, bookingDetails, listingDetails]) => (
                             <>
-                                <img
-                                    className={'w-96 h-64 rounded-md object-cover mt-5'}
-                                    src={listingResult.thumbnailImageUrl}
-                                    alt=''
-                                />
-                                <Suspense
-                                    fallback={
-                                        <div className={'ml-5'}>
-                                            <LoadingListingDetailsComponent />
+                                <ListingImageComponent listing={listing} details={listingDetails} />
+                                <Card className={'border-none shadow-none'}>
+                                    <CardHeader>
+                                        <Badge
+                                            className={'self-start'}
+                                            variant={
+                                                bookingDetails.availability
+                                                    .isAvailableDuringRequestedTimeframe
+                                                    ? 'positive'
+                                                    : 'destructive'
+                                            }>
+                                            {bookingDetails.availability
+                                                .isAvailableDuringRequestedTimeframe
+                                                ? 'Available'
+                                                : 'Not available'}
+                                        </Badge>
+                                        <CardTitle>{listing.name}</CardTitle>
+                                        <div className={'space-x-2 flex items-center'}>
+                                            <CardDescription>
+                                                {listing.locationName}
+                                            </CardDescription>
+                                            <Badge variant={'outline'}>
+                                                {listing.distance?.toFixed(2)}km
+                                            </Badge>
                                         </div>
-                                    }>
-                                    <Await resolve={details}>
-                                        {(detailsResult) => (
-                                            <Card className={'border-none w-full shadow-none'}>
-                                                <CardHeader>
-                                                    <Badge
-                                                        className={'self-start'}
-                                                        variant={
-                                                            detailsResult.availability
-                                                                .isAvailableDuringRequestedTimeframe
-                                                                ? 'positive'
-                                                                : 'destructive'
-                                                        }>
-                                                        {detailsResult.availability
-                                                            .isAvailableDuringRequestedTimeframe
-                                                            ? 'Available'
-                                                            : 'Not available'}
-                                                    </Badge>
-                                                    <CardTitle>{listingResult.name}</CardTitle>
-                                                    <div className={'space-x-2 flex items-center'}>
-                                                        <CardDescription>
-                                                            {listingResult.locationName}
-                                                        </CardDescription>
-                                                        <Badge variant={'outline'}>
-                                                            {listingResult.distance?.toFixed(2)}km
-                                                        </Badge>
-                                                    </div>
-                                                    <p className={'font-bold text-2xl'}>
-                                                        {detailsResult.pricing.totalPrice}
-                                                    </p>
-                                                    <div className={'flex gap-x-2'}>
-                                                        <Link
-                                                            to={`https://airbnb.com/rooms/${listingResult.id}`}
-                                                            className={buttonVariants({
-                                                                size: 'sm',
-                                                            })}>
-                                                            <span
-                                                                className={
-                                                                    'gap-2 flex items-center'
-                                                                }>
-                                                                <ExternalLink
-                                                                    size={14}></ExternalLink>
-                                                                View on airbnb
-                                                            </span>
-                                                        </Link>
-                                                        <Link
-                                                            target={'_blank'}
-                                                            to={`https://www.google.com/maps/dir/?api=1&origin=${balloon.locationName}&destination=${listingResult.lat},${listingResult.long}&travelmode=driving`}
-                                                            className={buttonVariants({
-                                                                variant: 'secondary',
-                                                                size: 'sm',
-                                                            })}>
-                                                            <span
-                                                                className={
-                                                                    'gap-2 flex items-center'
-                                                                }>
-                                                                <ExternalLink
-                                                                    size={14}></ExternalLink>
-                                                                View on Google Maps
-                                                            </span>
-                                                        </Link>
-                                                    </div>
-                                                </CardHeader>
-                                                <CardContent>
-                                                    <TagsComponent tags={listingResult.tags} />
-                                                </CardContent>
-                                            </Card>
-                                        )}
-                                    </Await>
-                                </Suspense>
+                                        <p className={'font-bold text-2xl'}>
+                                            {bookingDetails.pricing.totalPrice}
+                                        </p>
+                                        <div className={'flex gap-x-2'}>
+                                            <Link
+                                                target={'_blank'}
+                                                to={`https://airbnb.com/rooms/${listing.id}`}
+                                                className={buttonVariants({
+                                                    size: 'sm',
+                                                })}>
+                                                <span className={'gap-2 flex items-center'}>
+                                                    <ExternalLink size={14}></ExternalLink>
+                                                    Airbnb
+                                                </span>
+                                            </Link>
+                                            <Link
+                                                target={'_blank'}
+                                                to={`https://www.google.com/maps/dir/?api=1&origin=${balloon.locationName}&destination=${listing.lat},${listing.long}&travelmode=driving`}
+                                                className={buttonVariants({
+                                                    variant: 'secondary',
+                                                    size: 'sm',
+                                                })}>
+                                                <span className={'gap-2 flex items-center'}>
+                                                    <ExternalLink size={14}></ExternalLink>
+                                                    Google Maps
+                                                </span>
+                                            </Link>
+                                        </div>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <TagsComponent tags={listing.tags} />
+                                    </CardContent>
+                                </Card>
                             </>
                         )}
                     </Await>
                 </Suspense>
             </div>
         </Modal>
+    );
+};
+
+const ListingImageComponent = ({
+    listing,
+    details,
+}: {
+    listing: Listing;
+    details: ListingDetails;
+}) => {
+    const [selectedImage, setSelectedImage] = useState(listing.thumbnailImageUrl);
+    const imageRef = useRef<HTMLImageElement>(null);
+    const scrollRef = useRef<HTMLDivElement>(null);
+
+    return (
+        <div className={'p-5 md:p-0  w-full md:w-96 overflow-scroll flex flex-col items-center'}>
+            <img
+                key={selectedImage}
+                className={'md:w-96 w-full h-44 md:h-64 rounded-md object-cover'}
+                src={selectedImage}
+                alt=''
+            />
+            <div ref={scrollRef} className={'flex items-center mt-2 gap-2 overflow-scroll'}>
+                {details.listing.xl_picture_urls.map((url, index) => (
+                    <img
+                        key={url}
+                        ref={imageRef}
+                        onClick={() => {
+                            if (scrollRef.current && imageRef.current) {
+                                scrollRef.current.scrollLeft =
+                                    (index - 1) * (imageRef.current.clientWidth + 8);
+                            }
+                            setSelectedImage(url);
+                        }}
+                        className={cn(
+                            'rounded-md bg-gray-200 object-cover hover:cursor-pointer',
+                            url === selectedImage ? 'h-20' : 'h-16'
+                        )}
+                        src={url}
+                    />
+                ))}
+            </div>
+        </div>
     );
 };
 

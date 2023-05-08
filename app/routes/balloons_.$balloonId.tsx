@@ -2,12 +2,12 @@ import { DataFunctionArgs, defer } from '@remix-run/node';
 import {
     Await,
     Form,
-    isRouteErrorResponse,
     Link,
     Outlet,
     useLoaderData,
     useNavigation,
     useRouteError,
+    useSearchParams,
 } from '@remix-run/react';
 import { NoItemsComponent } from '~/ui/components/error/NoItemsComponent';
 import { HouseIllustration } from '~/ui/illustrations/HouseIllustration';
@@ -26,10 +26,54 @@ import { buttonVariants } from '~/ui/components/import/button';
 import { Badge } from '~/ui/components/common/Tag';
 import { tagColors } from '~/routes/balloons_.$balloonId.listing.$listingId';
 import { requireReadPermission, requireWritePermission } from '~/utils/auth/permission.server';
-import { Container } from '~/ui/components/common/Container';
-import { Card, CardHeader } from '~/ui/components/import/card';
 import { ErrorComponent } from '~/ui/components/error/ErrorComponent';
 import { Share } from 'lucide-react';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from '~/ui/components/form/Select';
+
+type ListingWithDetails = {
+    listing: Listing & { tags: Tag[] };
+    details: Awaited<ReturnType<typeof getListing>>;
+};
+
+function getPrice(price: string) {
+    return parseFloat(price.replace(/[^0-9.-]+/g, ''));
+}
+
+function sortListings(listings: ListingWithDetails[], sorting: string) {
+    const sortNumberAscending = (a: number | null, b: number | null) => {
+        if (!a || !b || a === b) {
+            return 0;
+        }
+        return a - b;
+    };
+    const sortNameAscending = (a: string, b: string) => {
+        return a.localeCompare(b);
+    };
+
+    return listings.sort((a, b) => {
+        if (sorting === 'distance') {
+            return sortNumberAscending(a.listing?.distance, b.listing?.distance);
+        }
+        if (sorting === 'price') {
+            return sortNumberAscending(
+                getPrice(a.details.pricing.totalPrice),
+                getPrice(b.details.pricing.totalPrice)
+            );
+        }
+        if (sorting === 'locationName') {
+            return sortNameAscending(a.listing.locationName, b.listing.locationName);
+        }
+        return 0;
+    });
+}
 
 export const loader = async ({ request, params }: DataFunctionArgs) => {
     const balloonId = requireParameter('balloonId', params);
@@ -41,6 +85,7 @@ export const loader = async ({ request, params }: DataFunctionArgs) => {
         })
         .then(requireResult<Balloon>);
     await requireReadPermission(request, { balloon });
+    const sort = new URL(request.url).searchParams.get('sort') ?? '';
     const listings = await prisma.listing.findMany({ where: { balloon }, include: { tags: true } });
     const listingsWithDetails = Promise.all(
         listings.map(async (listing) => {
@@ -52,7 +97,7 @@ export const loader = async ({ request, params }: DataFunctionArgs) => {
             });
             return { listing, details };
         })
-    );
+    ).then((listings) => sortListings(listings, sort));
     return defer({ length: listings.length, balloon, listingsWithDetails });
 };
 
@@ -69,9 +114,10 @@ export const action = async ({ request, params }: DataFunctionArgs) => {
 
 const BalloonDetailsPage = () => {
     const { balloon, length, listingsWithDetails } = useLoaderData<typeof loader>();
+
     return (
         <>
-            <span className={'flex items-center justify-between'}>
+            <span className={'flex flex-wrap items-center justify-between'}>
                 <div className={'flex items-center gap-2'}>
                     <PageHeader>{balloon.name}</PageHeader>
                     <Link
@@ -82,14 +128,17 @@ const BalloonDetailsPage = () => {
                 </div>
                 <span className={'flex items-center gap-2'}>
                     <Link to={'edit'} className={buttonVariants({ variant: 'secondary' })}>
-                        Edit Balloon
+                        Edit
                     </Link>
                     <Link to={'listing/add'} className={buttonVariants()}>
-                        Add Listing
+                        Add
                     </Link>
                 </span>
             </span>
-            <BalloonDetailsComponent balloon={balloon} />
+            <div className={'flex items-center gap-2 flex-wrap pt-2'}>
+                {/*<BalloonDetailsComponent balloon={balloon} />*/}
+                {/*<SortingComponent />*/}
+            </div>
             <Suspense fallback={<LoadingListingsComponentGrid length={length} />}>
                 <Await
                     resolve={listingsWithDetails}
@@ -133,9 +182,14 @@ const ListingComponent = ({
     guests: number;
 }) => {
     const navigation = useNavigation();
+    const [searchParams] = useSearchParams();
+
     return (
         <>
-            <div className={'relative w-72 transition hover:scale-105 ease-in-out duration-200'}>
+            <div
+                className={
+                    'relative w-full md:w-72 transition hover:scale-105 ease-in-out duration-200'
+                }>
                 {navigation.formData?.get('deleteListing') === listing.id && (
                     <RemovingLinkAnimation />
                 )}
@@ -150,11 +204,11 @@ const ListingComponent = ({
                         <CloseIcon onClick={() => void 0}></CloseIcon>
                     </button>
                 </Form>
-                <Link to={`listing/${listing.id}`}>
+                <Link to={{ pathname: `listing/${listing.id}`, search: searchParams.toString() }}>
                     <img
                         alt={'listing-thumbnail'}
                         src={listing.thumbnailImageUrl}
-                        className={'bg-gray-200 rounded-xl object-cover h-44 w-72'}
+                        className={'bg-gray-200 rounded-xl object-cover h-44 w-full md:w-72'}
                     />
                     <div className={'mt-2'}>
                         <p
@@ -169,10 +223,10 @@ const ListingComponent = ({
                         </p>
                         <p className={'font-medium'}>{listing.locationName}</p>
                     </div>
-                    <span className={'flex gap-x-2 items-center'}>
-                        <p className={'text-sm text-gray-600 truncate'}>{listing.name}</p>
+                    <div className={'flex gap-x-2 items-center max-w-full'}>
+                        <div className={'text-sm text-gray-600 min-w-0'}>{listing.name}</div>
                         <Badge>{listing.distance?.toFixed(2) || 0}km</Badge>
-                    </span>
+                    </div>
                     <div className={'mt-1 flex items-center gap-x-2'}>
                         <p className={'font-medium'}>{details.pricing.totalPrice}</p>
                         <p className={'text-gray-500 text-sm'}>
@@ -216,6 +270,37 @@ const ListingComponent = ({
     );
 };
 
+const SortingComponent = () => {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const updateUrl = (value: string) => {
+        searchParams.set('sort', value);
+        setSearchParams(searchParams);
+    };
+    const sort = searchParams.get('sort');
+    return (
+        <Select defaultValue={sort ?? 'none'} onValueChange={(value) => updateUrl(value)}>
+            <SelectTrigger
+                className={
+                    'w-[180px] rounded-full py-1 px-3 flex items-center gap-2 bg-white shadow-md border text-sm font-medium '
+                }>
+                <div className={'flex items-center gap-2'}>
+                    <p className={'font-normal'}>Sort:</p>
+                    <SelectValue placeholder={'No sorting'} />
+                </div>
+            </SelectTrigger>
+            <SelectContent>
+                <SelectGroup>
+                    <SelectLabel>Sorting</SelectLabel>
+                    <SelectItem value='none'>None</SelectItem>
+                    <SelectItem value='locationName'>Location name</SelectItem>
+                    <SelectItem value='price'>Price</SelectItem>
+                    <SelectItem value='distance'>Distance</SelectItem>
+                </SelectGroup>
+            </SelectContent>
+        </Select>
+    );
+};
+
 const RemovingLinkAnimation = () => {
     return (
         <div
@@ -229,7 +314,6 @@ const RemovingLinkAnimation = () => {
 
 export const ErrorBoundary = () => {
     const error = useRouteError();
-
     return (
         <>
             <ErrorComponent error={error} />

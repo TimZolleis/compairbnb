@@ -5,8 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b9e88dae-dedd-4ce1-9bfa-17ee84bf83e8" name="Changes" comment="test6">
+      <change afterPath="$PROJECT_DIR$/app/ui/components/form/Select.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/root.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/root.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/types/airbnb-listing-details.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/types/airbnb-listing-details.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/Layout/AppLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/Layout/AppLayout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/common/PageHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/components/common/PageHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/import/button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/components/import/button.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/modal/Modal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/ui/components/modal/Modal.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +36,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -47,7 +61,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "add-sorting",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/tim/IdeaProjects/compairbnb/app/routes",
     "node.js.detected.package.eslint": "true",
@@ -196,6 +210,28 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />

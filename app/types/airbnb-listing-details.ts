@@ -26,10 +26,10 @@ interface Listing {
     beds: number;
     market: string;
     min_nights: number;
-    neighborhood: any;
+    neighborhood?: string;
     person_capacity: number;
     state: string;
-    zipcode: any;
+    zipcode?: string;
     user: User;
     hosts: Host[];
     primary_host: PrimaryHost;
@@ -46,7 +46,7 @@ interface Listing {
     xl_picture_urls: string[];
     picture_count: number;
     currency_symbol_left: string;
-    currency_symbol_right: any;
+    currency_symbol_right?: string;
     picture_captions: string[];
     bed_type: string;
     bed_type_category: string;
@@ -59,14 +59,14 @@ interface Listing {
     check_in_time_ends_at: number;
     check_out_time: number;
     guests_included: number;
-    license: any;
+    license?: string;
     max_nights: number;
-    square_feet: any;
+    square_feet?: number;
     locale: string;
-    has_viewed_terms: any;
-    has_viewed_cleaning: any;
+    has_viewed_terms?: string;
+    has_viewed_cleaning?: string;
     has_agreed_to_legal_terms: boolean;
-    has_viewed_ib_perf_dashboard_panel: any;
+    has_viewed_ib_perf_dashboard_panel?: string;
     localized_city: string;
     language: string;
     public_address: string;
@@ -101,7 +101,7 @@ interface Listing {
     star_rating: number;
     price_for_extra_person_native: number;
     time_zone_name: string;
-    weekly_price_factor: any;
+    weekly_price_factor?: string;
     monthly_price_factor: number;
     guest_controls: GuestControls;
     check_in_time_start: string;
@@ -202,7 +202,7 @@ interface GuestControls {
     allows_pets_as_host: boolean;
     allows_smoking_as_host: boolean;
     allows_events_as_host: boolean;
-    children_not_allowed_details: any;
+    children_not_allowed_details?: string;
     id: number;
     structured_house_rules: string[];
 }
