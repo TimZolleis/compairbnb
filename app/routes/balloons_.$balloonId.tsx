@@ -19,24 +19,16 @@ import { CloseIcon } from '~/ui/icons/CloseIcon';
 import { requireParameter } from '~/utils/form/formdata.server';
 import { prisma } from '../../prisma/db';
 import { getListing } from '~/utils/axios/api/listing.server';
-import React, { Suspense } from 'react';
+import React, { Fragment, Suspense, useState } from 'react';
 import { LoadingListingsComponentGrid } from '~/ui/components/loading/LoadingListingComponent';
 import { LoadingSpinner } from '~/ui/components/loading/LoadingComponent';
 import { buttonVariants } from '~/ui/components/import/button';
 import { Badge } from '~/ui/components/common/Tag';
-import { tagColors } from '~/routes/balloons_.$balloonId.listing.$listingId';
 import { requireReadPermission, requireWritePermission } from '~/utils/auth/permission.server';
 import { ErrorComponent } from '~/ui/components/error/ErrorComponent';
-import { Share } from 'lucide-react';
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from '~/ui/components/form/Select';
+import { CheckIcon, ChevronDown, Share } from 'lucide-react';
+import { Listbox, Transition } from '@headlessui/react';
+import { tagColors } from '~/components/features/listing/ListingTags';
 
 type ListingWithDetails = {
     listing: Listing & { tags: Tag[] };
@@ -277,33 +269,72 @@ const ListingComponent = ({
 };
 
 const SortingComponent = () => {
+    const sortingOptions = ['none', 'distance', 'price', 'locationName'];
+    const sortingNames = new Map([
+        ['none', 'None'],
+        ['distance', 'Distance'],
+        ['price', 'Price'],
+        ['locationName', 'Location name'],
+    ]);
+
     const [searchParams, setSearchParams] = useSearchParams();
     const updateUrl = (value: string) => {
+        setSelected(value);
         searchParams.set('sort', value);
         setSearchParams(searchParams);
     };
     const sort = searchParams.get('sort');
+    const [selected, setSelected] = useState(sort ?? sortingOptions[0]);
+
     return (
-        <Select defaultValue={sort ?? 'none'} onValueChange={(value) => updateUrl(value)}>
-            <SelectTrigger
-                className={
-                    'w-[180px] rounded-full py-1 px-3 flex items-center gap-2 bg-white shadow-md border text-sm font-medium '
-                }>
-                <div className={'flex items-center gap-2'}>
-                    <p className={'font-normal'}>Sort:</p>
-                    <SelectValue placeholder={'No sorting'} />
+        <div className={'z-50 w-full'}>
+            <Listbox value={selected} onChange={(value) => updateUrl(value)}>
+                <div className='relative'>
+                    <Listbox.Button className='rounded-full py-1 px-3 flex items-center gap-2 bg-white shadow-md border text-sm'>
+                        <p className={'text-gray-600'}>Sort:</p>
+                        <span className='block truncate font-medium'>
+                            {sortingNames.get(selected)}
+                        </span>
+                        <ChevronDown className={'stroke-gray-600 stroke-1'} />
+                    </Listbox.Button>
+                    <Transition
+                        as={Fragment}
+                        leave='transition ease-in duration-100'
+                        leaveFrom='opacity-100'
+                        leaveTo='opacity-0'>
+                        <Listbox.Options className='absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+                            {sortingOptions.map((option, index) => (
+                                <Listbox.Option
+                                    key={index}
+                                    className={
+                                        'relative cursor-default select-none px-5 py-2 rounded-full'
+                                    }
+                                    value={option}>
+                                    {({ selected }) => (
+                                        <div className={'flex items-center gap-2'}>
+                                            <span
+                                                className={`block truncate text-gray-600 text-sm ${
+                                                    selected ? 'font-medium' : 'font-normal'
+                                                }`}>
+                                                {sortingNames.get(option)}
+                                            </span>
+                                            {selected ? (
+                                                <span className='left-0 flex items-center p-1'>
+                                                    <CheckIcon
+                                                        className='h-5 w-5'
+                                                        aria-hidden='true'
+                                                    />
+                                                </span>
+                                            ) : null}
+                                        </div>
+                                    )}
+                                </Listbox.Option>
+                            ))}
+                        </Listbox.Options>
+                    </Transition>
                 </div>
-            </SelectTrigger>
-            <SelectContent>
-                <SelectGroup>
-                    <SelectLabel>Sorting</SelectLabel>
-                    <SelectItem value='none'>None</SelectItem>
-                    <SelectItem value='locationName'>Location name</SelectItem>
-                    <SelectItem value='price'>Price</SelectItem>
-                    <SelectItem value='distance'>Distance</SelectItem>
-                </SelectGroup>
-            </SelectContent>
-        </Select>
+            </Listbox>
+        </div>
     );
 };
 

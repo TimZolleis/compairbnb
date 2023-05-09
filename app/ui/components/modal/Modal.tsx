@@ -2,9 +2,10 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CloseIcon } from '~/ui/icons/CloseIcon';
 import { cva, VariantProps } from 'class-variance-authority';
+import { X } from 'lucide-react';
 
 const modal = cva(
-    'relative overflow-y-scroll  w-full bg-white shadow-xl rounded-lg border bg-card text-card-foreground shadow-sm backdrop-blur-lg mx-auto ',
+    'relative overflow-y-scroll w-full bg-white shadow-xl rounded-xl border bg-card text-card-foreground shadow-sm backdrop-blur-lg mx-auto ',
     {
         variants: {
             width: {
@@ -88,7 +89,14 @@ export const Modal = ({ showModal, toggleModal, children, width }: ModalProps) =
                             exit={{ y: 500, opacity: 0 }}
                             onClick={(e) => e.stopPropagation()}
                             className={modal({ width })}>
-                            <div className={'md:px-5 md:py-5'}>{children}</div>
+                            <div className={'md:px-5 md:py-5 relative'}>
+                                <div
+                                    className={'pt-2 pr-2 absolute top-0 right-0'}
+                                    onClick={() => closeModal()}>
+                                    <X className={'stroke-gray-400 stroke-2'}></X>
+                                </div>
+                                <section className={'pt-5 md:p-0'}>{children}</section>
+                            </div>
                         </motion.section>
                     </motion.div>
                 ) : null}

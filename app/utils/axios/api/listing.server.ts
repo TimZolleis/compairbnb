@@ -2,6 +2,7 @@ import axios from 'axios';
 import { GPStaysDeferredSections } from '~/types/airbnb-listing-price';
 import { ListingDetails } from '~/types/airbnb-listing-details';
 import { ListingAvailability } from '~/types/airbnb-listing-availability';
+import { handleCacheError, readFromCache, writeToCache } from '~/utils/cache/cache.server';
 
 export function getClient(baseUrl?: string) {
     return axios.create({
@@ -98,10 +99,17 @@ export async function checkAvailability({
 }
 
 export async function getListingDetails(listingId: string) {
-    const url = 'https://api.airbnb.com/v1/listings';
-    const client = getClient(url);
-    const response = await client.get<ListingDetails>(listingId);
-    return response.data;
+    const key = `listing-details-${listingId}`;
+    try {
+        return await readFromCache<ListingDetails>(key);
+    } catch (e) {
+        handleCacheError(e);
+        const url = 'https://api.airbnb.com/v1/listings';
+        const client = getClient(url);
+        const listingDetails = await client.get<ListingDetails>(listingId).then((res) => res.data);
+        await writeToCache(key, JSON.stringify(listingDetails), 86400);
+        return listingDetails;
+    }
 }
 
 export async function getListingPrice({
@@ -110,33 +118,40 @@ export async function getListingPrice({
     checkOut,
     listingId,
 }: ListingDetailsProps) {
-    const { variables, extensions } = createListingArguments({
-        guests,
-        checkIn,
-        checkOut,
-        listingId,
-    });
-    const url = 'https://api.airbnb.com/v3/GPStaysDeferredSections';
-    const client = getClient();
-    const response = await client.get<GPStaysDeferredSections>(url, {
-        params: {
-            operationType: 'query',
-            variables: variables,
-            extensions: extensions,
-            operationName: 'GPStaysDeferredSections',
-        },
-    });
-    const bookingSection =
-        response.data.data?.presentation?.stayProductDetailPage?.sections?.sections?.find(
-            (section) => section.sectionId === 'BOOK_IT_FLOATING_FOOTER'
-        );
-    const totalPriceDetail =
-        bookingSection?.section?.structuredDisplayPrice?.explanationData?.priceDetails?.find(
-            (detail) => detail.items.some((item) => item.description === 'Total')
-        );
+    const key = `listing-price-${listingId}-checkin:${checkIn}-checkout:${checkOut}-guests:${guests}`;
+    try {
+        return await readFromCache<{ totalPrice: string }>(key);
+    } catch (e) {
+        handleCacheError(e);
+        const { variables, extensions } = createListingArguments({
+            guests,
+            checkIn,
+            checkOut,
+            listingId,
+        });
+        const url = 'https://api.airbnb.com/v3/GPStaysDeferredSections';
+        const client = getClient();
+        const response = await client.get<GPStaysDeferredSections>(url, {
+            params: {
+                operationType: 'query',
+                variables: variables,
+                extensions: extensions,
+                operationName: 'GPStaysDeferredSections',
+            },
+        });
+        const bookingSection =
+            response.data.data?.presentation?.stayProductDetailPage?.sections?.sections?.find(
+                (section) => section.sectionId === 'BOOK_IT_FLOATING_FOOTER'
+            );
+        const totalPriceDetail =
+            bookingSection?.section?.structuredDisplayPrice?.explanationData?.priceDetails?.find(
+                (detail) => detail.items.some((item) => item.description === 'Total')
+            );
 
-    const totalPrice = totalPriceDetail?.items[0]?.priceString || '0';
-    return { totalPrice };
+        const totalPrice = totalPriceDetail?.items[0]?.priceString || '0';
+        await writeToCache(key, JSON.stringify({ totalPrice }), 86400);
+        return { totalPrice };
+    }
 }
 
 export function createListingArguments({
