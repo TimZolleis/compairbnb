@@ -3,6 +3,7 @@ import { GPStaysDeferredSections } from '~/types/airbnb-listing-price';
 import { ListingDetails } from '~/types/airbnb-listing-details';
 import { ListingAvailability } from '~/types/airbnb-listing-availability';
 import { handleCacheError, readFromCache, writeToCache } from '~/utils/cache/cache.server';
+import { DateTime } from 'luxon';
 
 export function getClient(baseUrl?: string) {
     return axios.create({
@@ -11,7 +12,7 @@ export function getClient(baseUrl?: string) {
             'User-Agent':
                 'Airbnb/23.17.1 Name/GLOBAL_TRAVEL AppVersion/23.17.1 ReleaseStage/live iPhone/16.4.1 Type/Phone',
             'X-Airbnb-Currency': 'EUR',
-            'X-Airbnb-API-Key': '915pw2pnf4h1aiguhph5gc5b2',
+            'X-Airbnb-API-Key': 'd306zoyjsyarp7ifhu67rjxn52tv0t20',
         },
     });
 }
@@ -96,6 +97,20 @@ export async function checkAvailability({
         });
     });
     return { isAvailableDuringRequestedTimeframe, data };
+}
+
+export async function getYearlyAvailability(listingId: string) {
+    const url = 'https://api.airbnb.com/v2';
+    const client = getClient(url);
+    const response = await client.get<ListingAvailability>('homes_pdp_availability_calendar', {
+        params: {
+            listing_id: listingId,
+            month: DateTime.now().month,
+            year: DateTime.now().year,
+            count: 12,
+        },
+    });
+    return response.data;
 }
 
 export async function getListingDetails(listingId: string) {

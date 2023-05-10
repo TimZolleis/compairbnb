@@ -7,7 +7,7 @@ const ListingDetailsPage = () => {
     const navigate = useNavigate();
     return (
         <Modal width={'4xl'} showModal={true} toggleModal={() => navigate(-1)}>
-            <nav className={'px-5 mt-2'}>
+            <nav className={'px-5 md:px-0 mt-2 mb-5'}>
                 <div
                     className={
                         'w-full flex items-center p-1 justify-between bg-secondary/50 rounded-full'

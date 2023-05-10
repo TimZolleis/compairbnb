@@ -3,7 +3,7 @@ export interface ListingAvailability {
     metadata: Metadata;
 }
 
-interface CalendarMonth {
+export interface CalendarMonth {
     month: number;
     year: number;
     days: Day[];
