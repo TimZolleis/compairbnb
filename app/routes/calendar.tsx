@@ -1,8 +1,8 @@
-import { Modal } from '~/ui/components/modal/Modal';
+import { Modal } from '~/components/ui/Modal';
 import { DateTime, Interval } from 'luxon';
 import React, { useState } from 'react';
 import { Calendar } from '~/components/features/calendar/Calendar';
-import { checkAvailability, getYearlyAvailability } from '~/utils/axios/api/listing.server';
+import { checkAvailability, getYearlyAvailability } from '~/utils/airbnb-api/listing.server';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { AvailabilityCalendar } from '~/components/features/calendar/AvailabilityCalendar';

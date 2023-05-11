@@ -1,7 +1,7 @@
 import type { V2_MetaFunction } from '@remix-run/node';
 import { Link } from '@remix-run/react';
-import { ChevronUpIcon } from '~/ui/icons/ChevronUpIcon';
-import { useOptionalUser } from '~/utils/hooks/user';
+import { ChevronUpIcon } from '~/components/icons/ChevronUpIcon';
+import { useOptionalUser } from '~/utils/client-side-hooks/user';
 
 export const meta: V2_MetaFunction = () => {
     return [{ title: 'compairbnb | home' }];

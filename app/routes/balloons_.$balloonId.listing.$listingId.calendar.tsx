@@ -1,7 +1,7 @@
 //TODO: Add availability calendar
 
 import { DataFunctionArgs, defer } from '@remix-run/node';
-import { getYearlyAvailability } from '~/utils/axios/api/listing.server';
+import { getYearlyAvailability } from '~/utils/airbnb-api/listing.server';
 import { requireParameter } from '~/utils/form/formdata.server';
 import { Await, useLoaderData } from '@remix-run/react';
 import { Suspense } from 'react';
@@ -9,13 +9,7 @@ import {
     AvailabilityCalendar,
     getCurrentAvailabilityMonth,
 } from '~/components/features/calendar/AvailabilityCalendar';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '~/ui/components/import/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/Card';
 import { prisma } from '../../prisma/db';
 import { requireResult } from '~/models/listing.server';
 import { Balloon } from '.prisma/client';
@@ -24,7 +18,7 @@ import { ListingAvailability } from '~/types/airbnb-listing-availability';
 import { cn } from '~/utils/utils';
 import { CalendarSkeleton } from '~/components/features/calendar/CalendarSkeleton';
 import { AvailabilitySkeleton } from '~/components/features/listing/AvailabilitySkeleton';
-import { useRelative } from '~/utils/hooks/nav';
+import { useRelativeNavigation } from '~/utils/client-side-hooks/nav';
 
 export const loader = async ({ request, params }: DataFunctionArgs) => {
     const listingId = requireParameter('listingId', params);

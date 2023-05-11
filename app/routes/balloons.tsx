@@ -1,14 +1,14 @@
-import type { DataFunctionArgs, V2_MetaFunction } from '@remix-run/node';
+import type { DataFunctionArgs } from '@remix-run/node';
 import { json } from '@remix-run/node';
 import { requireUser } from '~/utils/auth/session.server';
 import { Link, Outlet, useLoaderData } from '@remix-run/react';
-import { NoItemsComponent } from '~/ui/components/error/NoItemsComponent';
-import { BalloonIllustration } from '~/ui/illustrations/BalloonIllustration';
+import { NoItems } from '~/components/features/error/NoItems';
+import { BalloonIllustration } from '~/components/illustrations/BalloonIllustration';
 import { Balloon } from '.prisma/client';
-import { ChevronUpIcon } from '~/ui/icons/ChevronUpIcon';
-import { PageHeader } from '~/ui/components/common/PageHeader';
+import { ChevronUpIcon } from '~/components/icons/ChevronUpIcon';
+import { PageHeader } from '~/components/ui/PageHeader';
 import { prisma } from '../../prisma/db';
-import { Popover } from '@headlessui/react';
+import { BalloonSettings } from '~/components/features/balloon/BalloonSettings';
 
 export const loader = async ({ request }: DataFunctionArgs) => {
     const user = await requireUser(request);
@@ -28,13 +28,13 @@ export default function BalloonPage() {
                     ))}
                 </div>
             ) : (
-                <NoItemsComponent
+                <NoItems
                     title={'You do not have any balloons'}
                     subtext={'To compare airbnbs, please put them in a balloon or use QuickCompare'}
                     ctaLink={'/balloons/add'}
                     ctaLinkName={'Create Balloon'}>
                     <BalloonIllustration className={'w-24'} />
-                </NoItemsComponent>
+                </NoItems>
             )}
             <Outlet />
         </>
@@ -49,7 +49,7 @@ const BalloonComponent = ({ balloon }: { balloon: Balloon }) => {
             }>
             <span>
                 <p className={'font-medium'}>{balloon.name}</p>
-                <BalloonDetailsComponent balloon={balloon} />
+                <BalloonSettings balloon={balloon} />
             </span>
             <Link
                 to={balloon.id}
@@ -58,42 +58,6 @@ const BalloonComponent = ({ balloon }: { balloon: Balloon }) => {
                 }>
                 <ChevronUpIcon direction={'right'} size={'sm'}></ChevronUpIcon>
             </Link>
-        </div>
-    );
-};
-
-export const BalloonDetailBadge = ({ name, value }: { name: string; value: string }) => {
-    return (
-        <div className={'flex'}>
-            <div
-                className={
-                    'rounded-full py-1 px-3 flex items-center gap-2 bg-white shadow-md border text-sm'
-                }>
-                <p className={'text-gray-600'}>{name}:</p>
-                <p className={'font-medium'}>{value}</p>
-            </div>
-        </div>
-    );
-};
-export const BalloonDetailsComponent = ({ balloon }: { balloon: Balloon }) => {
-    const calculateNights = () => {
-        const startDate = new Date(balloon.startDate);
-        const endDate = new Date(balloon.endDate);
-        const diff = endDate.getTime() - startDate.getTime();
-        return Math.floor(diff / (1000 * 60 * 60 * 24));
-    };
-    return (
-        <div className={'flex items-center gap-2 flex-wrap'}>
-            <BalloonDetailBadge name={'Guests'} value={balloon.guests.toString()} />
-            <Popover className={'relative'}>
-                <Popover.Button>
-                    <BalloonDetailBadge name={'Start date'} value={balloon.startDate.toString()} />
-                </Popover.Button>
-                <Popover.Panel className={'absolute z-10 bg-white'}>Calendar here</Popover.Panel>
-            </Popover>
-            <BalloonDetailBadge name={'End date'} value={balloon.endDate.toString()} />
-            <BalloonDetailBadge name={'Nights'} value={calculateNights().toString()} />
-            <BalloonDetailBadge name={'Starting location'} value={balloon.locationName} />
         </div>
     );
 };

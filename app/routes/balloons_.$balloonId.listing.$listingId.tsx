@@ -1,13 +1,12 @@
 import { NavLink, Outlet, useMatches, useNavigate, useSearchParams } from '@remix-run/react';
 import React, { ReactNode } from 'react';
-import { Modal } from '~/ui/components/modal/Modal';
+import { Modal } from '~/components/ui/Modal';
 import { cn } from '~/utils/utils';
-import { useParameters } from '~/utils/hooks/nav';
+import { useRouteParameters } from '~/utils/client-side-hooks/nav';
 
 const ListingDetailsPage = () => {
     const navigate = useNavigate();
-    const url = useParameters('/balloons/$balloonId');
-    console.log(url);
+    const url = useRouteParameters('/balloons/$balloonId');
     return (
         <Modal width={'4xl'} showModal={true} toggleModal={() => navigate(url)}>
             <nav className={'px-5 md:px-0 mt-2 mb-5'}>

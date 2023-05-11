@@ -4,16 +4,71 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b9e88dae-dedd-4ce1-9bfa-17ee84bf83e8" name="Changes" comment="add availability calendar">
-      <change afterPath="$PROJECT_DIR$/app/components/features/calendar/CalendarSkeleton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/components/features/listing/AvailabilitySkeleton.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/utils/hooks/nav.ts" afterDir="false" />
+    <list default="true" id="b9e88dae-dedd-4ce1-9bfa-17ee84bf83e8" name="Changes" comment="fix listing details">
+      <change afterPath="$PROJECT_DIR$/app/components/features/balloon/BalloonSettings.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/components/features/balloon/Sorting.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/components/features/balloon/input/BalloonForm.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/components/features/balloon/input/GuestCount.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/components/features/listing/ListingCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/exception/EnvRequiredException.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/env/env.server.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/components/features/listing/ListingImageCarousel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/features/listing/ListingImageCarousel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/features/listing/ListingTags.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/features/listing/ListingTags.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/listing.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/listing.server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/root.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/root.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/_index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/_index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons.add.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons.add.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/balloons.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.edit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.edit.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId._index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId._index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId.calendar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId.calendar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId.map.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId.map.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.add.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.add.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.share.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.share.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/calendar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/calendar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/register.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/register.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/types/airbnb-listing-availability.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/types/airbnb-listing-availability.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/types/airbnb-listing-details.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/types/airbnb-listing-details.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/types/airbnb-listing-price.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/types/airbnb-listing-price.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/Layout/AppLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/features/util/AppLayout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/common/ClientOnly.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/features/util/ClientOnly.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/common/Container.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/ui/Container.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/common/PageHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/ui/PageHeader.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/common/Tag.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/ui/Badge.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/date/DatePicker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/features/balloon/BalloonMap.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/error/ErrorComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/features/error/ErrorContainer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/error/NoItemsComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/features/error/NoItems.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/form/Select.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/form/TextArea.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/form/TextInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/ui/Input.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/form/Toggle.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/ui/Toggle.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/import/button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/ui/Button.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/import/card.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/ui/Card.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/loading/LoadingComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/features/loading/LoadingSpinner.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/loading/LoadingListingComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/features/listing/ListingSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/map/DraggableMarker.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/features/map/DraggableMarker.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/map/MapComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/features/map/MapComponent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/map/map.client.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/features/map/map.client.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/modal/Modal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/ui/Modal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/components/user/UserMenuComponent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/features/user/UserMenu.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/icons/ChevronUpIcon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/icons/ChevronUpIcon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/icons/CloseIcon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/icons/CloseIcon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/icons/MinusIcon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/icons/MinusIcon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/icons/PlusIcon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/icons/PlusIcon.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/icons/icon.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/icons/icon.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/illustrations/BalloonIllustration.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/illustrations/BalloonIllustration.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ui/illustrations/HouseIllustration.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/illustrations/HouseIllustration.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/auth/permission.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/auth/permission.server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/axios/api/listing.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/airbnb-api/listing.server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/cache/cache.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/cache/cache.server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/encryption/encryption.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/encryption/encryption.server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/hooks/nav.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/client-side-hooks/nav.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/hooks/user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/client-side-hooks/user.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils/map/map.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/map/map.server.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/prisma/schema.prisma" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +91,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="restructure-ui" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -54,33 +109,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/tim/IdeaProjects/compairbnb/app/routes&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;C:\\Users\\tim\\IdeaProjects\\compairbnb\\node_modules\\prettier&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\tim\\IdeaProjects\\compairbnb\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "restructure-ui",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/tim/IdeaProjects/compairbnb/app/routes",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "prettierjs.PrettierConfiguration.Package": "C:\\Users\\tim\\IdeaProjects\\compairbnb\\node_modules\\prettier",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "ts.external.directory.path": "C:\\Users\\tim\\IdeaProjects\\compairbnb\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mariadb&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mariadb"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\tim\IdeaProjects\compairbnb\app\routes" />
@@ -88,8 +143,11 @@
       <recent name="C:\Users\tim\IdeaProjects\react-leaflet-example\public\resources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\tim\IdeaProjects\compairbnb\app\routes" />
-      <recent name="C:\Users\tim\IdeaProjects\compairbnb\app\components\features\listing" />
+      <recent name="C:\Users\tim\IdeaProjects\compairbnb\app\utils" />
+      <recent name="C:\Users\tim\IdeaProjects\compairbnb\app\components\features\util" />
+      <recent name="C:\Users\tim\IdeaProjects\compairbnb\app\components" />
+      <recent name="C:\Users\tim\IdeaProjects\compairbnb\app\components\features\user" />
+      <recent name="C:\Users\tim\IdeaProjects\compairbnb\app\components\ui" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -124,6 +182,7 @@
       <workItem from="1683733748625" duration="9232000" />
       <workItem from="1683820165162" duration="5181000" />
       <workItem from="1683829480266" duration="98000" />
+      <workItem from="1683829676968" duration="5147000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1683058528623</created>

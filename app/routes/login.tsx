@@ -1,6 +1,6 @@
 import { DataFunctionArgs, json, redirect } from '@remix-run/node';
 import { Form, Link, useActionData } from '@remix-run/react';
-import { TextInput } from '~/ui/components/form/TextInput';
+import { Input } from '~/components/ui/Input';
 import { requireFormDataValue } from '~/utils/form/formdata.server';
 import { loginUser } from '~/utils/auth/user.server';
 import { setUser } from '~/utils/auth/session.server';
@@ -40,8 +40,8 @@ const LoginPage = () => {
                 }>
                 <Form method={'post'}>
                     <div className={'grid gap-2'}>
-                        <TextInput required={true} placeholder={'Username'} name={'username'} />
-                        <TextInput
+                        <Input required={true} placeholder={'Username'} name={'username'} />
+                        <Input
                             required={true}
                             placeholder={'Password'}
                             type={'password'}

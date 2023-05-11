@@ -1,5 +1,5 @@
 import { commitLoginSession, getLoginSession, getUser } from '~/utils/auth/session.server';
-import { Balloon, Listing } from '.prisma/client';
+import { Balloon } from '.prisma/client';
 import { prisma } from '../../../prisma/db';
 
 class InsufficientPermissionException extends Error {

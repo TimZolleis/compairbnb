@@ -1,5 +1,5 @@
 import { prisma } from '../../prisma/db';
-import { getListingDetails } from '~/utils/axios/api/listing.server';
+import { getListingDetails } from '~/utils/airbnb-api/listing.server';
 import bcrypt from 'bcrypt';
 import { Listing } from '.prisma/client';
 import { calculateDistance, calculateDistanceForListings } from '~/utils/map/distance.server';
@@ -44,6 +44,7 @@ export async function createListing({ balloonId, listingId }: ListingProps) {
             lat: details.listing.lat,
             long: details.listing.lng,
             balloonId: balloonId,
+            roomType: details.listing.room_type,
             distance,
         },
         update: {},
