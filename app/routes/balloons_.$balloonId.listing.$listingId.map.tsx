@@ -2,9 +2,9 @@ import { Await, useLoaderData } from '@remix-run/react';
 import { DataFunctionArgs, defer, LinksFunction } from '@remix-run/node';
 import { requireParameter } from '~/utils/form/formdata.server';
 import { requireReadPermission } from '~/utils/auth/permission.server';
-import { getListingDetails } from '~/utils/axios/api/listing.server';
+import { getListingDetails } from '~/utils/airbnb-api/listing.server';
 import { Suspense, useState } from 'react';
-import { MapComponent, StaticMapComponent } from '~/ui/components/map/MapComponent';
+import { MapComponent, StaticMapComponent } from '~/components/features/map/MapComponent';
 
 export const loader = async ({ request, params }: DataFunctionArgs) => {
     const listingId = requireParameter('listingId', params);

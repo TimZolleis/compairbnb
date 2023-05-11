@@ -1,5 +1,5 @@
 import { Form, Link } from '@remix-run/react';
-import { TextInput } from '~/ui/components/form/TextInput';
+import { Input } from '~/components/ui/Input';
 import { DataFunctionArgs, json, redirect } from '@remix-run/node';
 import { requireFormDataValue } from '~/utils/form/formdata.server';
 import { createUser } from '~/utils/auth/user.server';
@@ -42,15 +42,15 @@ const RegistrationPage = () => {
                 }>
                 <Form method={'post'}>
                     <div className={'grid gap-2'}>
-                        <TextInput required={true} placeholder={'Name'} name={'username'} />
-                        <TextInput required={true} placeholder={'Email'} name={'email'} />
-                        <TextInput
+                        <Input required={true} placeholder={'Name'} name={'username'} />
+                        <Input required={true} placeholder={'Email'} name={'email'} />
+                        <Input
                             required={true}
                             placeholder={'Password'}
                             type={'password'}
                             name={'password'}
                         />
-                        <TextInput
+                        <Input
                             required={true}
                             placeholder={'Confirm password'}
                             type={'password'}

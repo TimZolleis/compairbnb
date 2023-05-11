@@ -1,10 +1,10 @@
 import { Tag } from '.prisma/client';
 import { useFetcher, useNavigation } from '@remix-run/react';
 import React, { useEffect, useRef, useState } from 'react';
-import { Badge } from '~/ui/components/common/Tag';
+import { Badge } from '~/components/ui/Badge';
 import { Loader2, X } from 'lucide-react';
-import { TextInput } from '~/ui/components/form/TextInput';
-import { Button } from '~/ui/components/import/button';
+import { Input } from '~/components/ui/Input';
+import { Button } from '~/components/ui/Button';
 import { cn } from '~/utils/utils';
 
 export const ListingTags = ({ tags }: { tags: Tag[] }) => {
@@ -60,7 +60,7 @@ export const ListingTags = ({ tags }: { tags: Tag[] }) => {
                     ref={ref}
                     className={'flex flex-col items-start w-full'}
                     method={'POST'}>
-                    <TextInput size={'md'} innerRef={inputRef} name={'tagValue'} />
+                    <Input size={'md'} innerRef={inputRef} name={'tagValue'} />
                     <span className={'flex justify-between items-start w-full mt-4'}>
                         <ColorPicker />
                         <Button

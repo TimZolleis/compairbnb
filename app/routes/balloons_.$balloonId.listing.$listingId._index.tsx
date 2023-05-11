@@ -1,26 +1,20 @@
-import { Modal } from '~/ui/components/modal/Modal';
+import { Modal } from '~/components/ui/Modal';
 import { Await, Link, Outlet, useLoaderData, useNavigate } from '@remix-run/react';
 import { DataFunctionArgs, defer } from '@remix-run/node';
 import { requireParameter } from '~/utils/form/formdata.server';
-import { getListing, getListingDetails } from '~/utils/axios/api/listing.server';
+import { getListing, getListingDetails } from '~/utils/airbnb-api/listing.server';
 import { requireResult } from '~/models/listing.server';
 import { Balloon, Listing, Tag } from '.prisma/client';
 import React, { Suspense } from 'react';
-import { Badge } from '~/ui/components/common/Tag';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '~/ui/components/import/card';
-import { buttonVariants } from '~/ui/components/import/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/Card';
+import { buttonVariants } from '~/components/ui/Button';
 import { ExternalLink } from 'lucide-react';
 import { requireReadPermission, requireWritePermission } from '~/utils/auth/permission.server';
 import { prisma } from '../../prisma/db';
 import { ListingDetailsSkeleton } from '~/components/features/listing/ListingDetailsSkeleton';
 import { ListingTags } from '~/components/features/listing/ListingTags';
 import { ListingImageCarousel } from '~/components/features/listing/ListingImageCarousel';
+import { Badge } from '~/components/ui/Badge';
 
 type ListingWithTags = Listing & { tags: Tag[] };
 
@@ -85,7 +79,7 @@ export const action = async ({ request, params }: DataFunctionArgs) => {
     return null;
 };
 
-const ListingDetailsComponent = () => {
+const ListingDetailsPage = () => {
     const navigate = useNavigate();
     const { balloon, listingWithDetailsAndBookingDetailsPromise } = useLoaderData<typeof loader>();
 
@@ -123,6 +117,7 @@ const ListingDetailsComponent = () => {
                                     </p>
                                     <div className={'flex gap-x-2'}>
                                         <Link
+                                            prefetch={'intent'}
                                             target={'_blank'}
                                             to={`https://airbnb.com/rooms/${listing.id}`}
                                             className={buttonVariants({
@@ -134,6 +129,7 @@ const ListingDetailsComponent = () => {
                                             </span>
                                         </Link>
                                         <Link
+                                            prefetch={'intent'}
                                             target={'_blank'}
                                             to={`https://www.google.com/maps/dir/?api=1&origin=${balloon.locationName}&destination=${listing.lat},${listing.long}&travelmode=driving`}
                                             className={buttonVariants({
@@ -159,4 +155,4 @@ const ListingDetailsComponent = () => {
     );
 };
 
-export default ListingDetailsComponent;
+export default ListingDetailsPage;

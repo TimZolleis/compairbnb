@@ -1,24 +1,18 @@
-import { Modal } from '~/ui/components/modal/Modal';
+import { Modal } from '~/components/ui/Modal';
 import { Form, useNavigate, useNavigation } from '@remix-run/react';
-import { TextInput } from '~/ui/components/form/TextInput';
+import { Input } from '~/components/ui/Input';
 import { DataFunctionArgs, redirect } from '@remix-run/node';
 import { requireFormDataValue, requireParameter } from '~/utils/form/formdata.server';
-import { LoadingComponent } from '~/ui/components/loading/LoadingComponent';
+import { LoadingSpinner } from '~/components/features/loading/LoadingSpinner';
 import { useState } from 'react';
-import { Toggle } from '~/ui/components/form/Toggle';
+import { Toggle } from '~/components/ui/Toggle';
 import { updateBalloon } from '~/models/balloon.server';
 import { createListing } from '~/models/listing.server';
-import { BalloonDetailBadge } from '~/routes/balloons';
-import { Button } from '~/ui/components/import/button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '~/ui/components/import/card';
+import { Button } from '~/components/ui/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/Card';
 import { getOptionalBalloonFormValues } from '~/routes/balloons_.$balloonId.edit';
 import { requireWritePermission } from '~/utils/auth/permission.server';
+import { BalloonDetailBadge } from '~/components/features/balloon/BalloonSettings';
 
 function parseAirbnbLink(link: string) {
     const url = new URL(link);
@@ -82,32 +76,32 @@ const AddListingToBalloonPage = () => {
                         </CardHeader>
                         <CardContent>
                             <Form method={'POST'} className={'w-full'}>
-                                <TextInput
+                                <Input
                                     required={true}
                                     onChange={(event) => checkLink(event.target.value)}
                                     name={'airbnbLink'}
-                                    placeholder={'https://airbnb.com/listings/123456'}></TextInput>
+                                    placeholder={'https://airbnb.com/listings/123456'}></Input>
 
                                 <div
                                     className={`flex items-center flex-wrap gap-2 ${
                                         guests || checkIn || checkOut ? 'mt-3' : ''
                                     }`}>
                                     {guests ? (
-                                        <DetectedValueComponent
+                                        <ParsedValue
                                             description={'Guests'}
                                             value={guests}
                                             name={'guests'}
                                         />
                                     ) : null}
                                     {checkIn ? (
-                                        <DetectedValueComponent
+                                        <ParsedValue
                                             description={'Check in date'}
                                             value={checkIn}
                                             name={'checkOut'}
                                         />
                                     ) : null}
                                     {checkOut ? (
-                                        <DetectedValueComponent
+                                        <ParsedValue
                                             description={'Check Out date'}
                                             value={checkOut}
                                             name={'checkout'}
@@ -117,11 +111,15 @@ const AddListingToBalloonPage = () => {
 
                                 {guests || checkIn || !checkOut ? (
                                     <>
-                                        <Label
-                                            text={
-                                                'Update balloon with detected values (guest number, dates)'
-                                            }
-                                        />
+                                        <span
+                                            className={
+                                                'leading-none w-full flex justify-start py-2'
+                                            }>
+                                            <p className={'text-sm text-muted-foreground'}>
+                                                Update balloon with detected values (guest number,
+                                                dates)
+                                            </p>
+                                        </span>
                                         <Toggle name={'updateBalloon'}></Toggle>
                                     </>
                                 ) : null}
@@ -139,21 +137,18 @@ const AddListingToBalloonPage = () => {
                     </Card>
                 </>
             ) : (
-                <LoadingComponent loadingTitle={'Adding your listing...'} />
+                <div className={'rounded-md p-5 flex items-center flex-col gap-3'}>
+                    <p className={'font-semibold text-rose-500 text-title-medium'}>
+                        Adding your listing...
+                    </p>
+                    <LoadingSpinner color={'stroke-rose-500'} />
+                </div>
             )}
         </Modal>
     );
 };
 
-const Label = ({ text }: { text: string }) => {
-    return (
-        <span className={'leading-none w-full flex justify-start py-2'}>
-            <p className={'text-sm text-muted-foreground'}>{text}</p>
-        </span>
-    );
-};
-
-const DetectedValueComponent = ({
+const ParsedValue = ({
     description,
     value,
     name,

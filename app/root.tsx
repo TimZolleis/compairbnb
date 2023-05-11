@@ -10,7 +10,7 @@ import {
 
 import stylesheet from '~/tailwind.css';
 import type { DataFunctionArgs, LinksFunction } from '@remix-run/node';
-import { AppLayout } from '~/ui/Layout/AppLayout';
+import { AppLayout } from '~/components/features/util/AppLayout';
 import { getUser } from '~/utils/auth/session.server';
 import { json, V2_MetaFunction } from '@remix-run/node';
 

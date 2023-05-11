@@ -1,11 +1,10 @@
 import Redis from 'ioredis';
+import { requireEnv } from '~/utils/env/env.server';
 
+const redisUrl = requireEnv('REDIS_URL');
 export const getRedisInstance = (): Redis => {
-    if (!process.env.REDIS_URL) {
-        throw new Error('ENV REDIS_URL is required');
-    }
     if (!global.__redisClient) {
-        global.__redisClient = new Redis(process.env.REDIS_URL);
+        global.__redisClient = new Redis(redisUrl);
     }
     return global.__redisClient;
 };
@@ -28,15 +27,7 @@ export function handleCacheError(e: unknown) {
     }
 }
 
-export function globalCache() {
-    if (!global.__globalCache) {
-        global.__globalCache = new Map();
-    }
-    return global.__globalCache;
-}
-
 declare global {
     // This preserves the Redis Client during development
     var __redisClient: Redis | undefined;
-    var __globalCache: Map<string, string>;
 }

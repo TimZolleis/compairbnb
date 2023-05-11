@@ -1,34 +1,29 @@
 import { DataFunctionArgs, defer } from '@remix-run/node';
 import {
     Await,
-    Form,
     Link,
     Outlet,
     useLoaderData,
-    useNavigation,
     useRouteError,
     useSearchParams,
 } from '@remix-run/react';
-import { NoItemsComponent } from '~/ui/components/error/NoItemsComponent';
-import { HouseIllustration } from '~/ui/illustrations/HouseIllustration';
+import { NoItems } from '~/components/features/error/NoItems';
+import { HouseIllustration } from '~/components/illustrations/HouseIllustration';
 import { deleteListing, requireResult } from '~/models/listing.server';
 import { Balloon, Listing, Tag } from '.prisma/client';
-import { BalloonDetailsComponent } from '~/routes/balloons';
-import { PageHeader } from '~/ui/components/common/PageHeader';
-import { CloseIcon } from '~/ui/icons/CloseIcon';
+import { PageHeader } from '~/components/ui/PageHeader';
 import { requireParameter } from '~/utils/form/formdata.server';
 import { prisma } from '../../prisma/db';
-import { getListing } from '~/utils/axios/api/listing.server';
-import React, { Fragment, Suspense, useState } from 'react';
-import { LoadingListingsComponentGrid } from '~/ui/components/loading/LoadingListingComponent';
-import { LoadingSpinner } from '~/ui/components/loading/LoadingComponent';
-import { buttonVariants } from '~/ui/components/import/button';
-import { Badge } from '~/ui/components/common/Tag';
+import { getListing } from '~/utils/airbnb-api/listing.server';
+import React, { Suspense } from 'react';
+import { ListingSkeletonGrid } from '~/components/features/listing/ListingSkeleton';
+import { buttonVariants } from '~/components/ui/Button';
 import { requireReadPermission, requireWritePermission } from '~/utils/auth/permission.server';
-import { ErrorComponent } from '~/ui/components/error/ErrorComponent';
-import { CheckIcon, ChevronDown, Share } from 'lucide-react';
-import { Listbox, Transition } from '@headlessui/react';
-import { tagColors } from '~/components/features/listing/ListingTags';
+import { Share } from 'lucide-react';
+import { ListingCard } from '~/components/features/listing/ListingCard';
+import { BalloonSettings } from '~/components/features/balloon/BalloonSettings';
+import { Sorting } from '~/components/features/balloon/Sorting';
+import { ErrorContainer } from '~/components/features/error/ErrorContainer';
 
 type ListingWithDetails = {
     listing: Listing & { tags: Tag[] };
@@ -132,10 +127,10 @@ const BalloonDetailsPage = () => {
                 </span>
             </span>
             <div className={'flex items-center gap-2 flex-wrap pt-2'}>
-                <BalloonDetailsComponent balloon={balloon} />
-                <SortingComponent />
+                <BalloonSettings balloon={balloon} />
+                <Sorting />
             </div>
-            <Suspense fallback={<LoadingListingsComponentGrid length={length} />}>
+            <Suspense fallback={<ListingSkeletonGrid length={length} />}>
                 <Await
                     resolve={listingsWithDetails}
                     errorElement={'An error occurred with suspense 1'}>
@@ -143,7 +138,7 @@ const BalloonDetailsPage = () => {
                         listings.length > 0 ? (
                             <div className={'mt-5 flex gap-5 flex-wrap'}>
                                 {listings.map((listing) => (
-                                    <ListingComponent
+                                    <ListingCard
                                         guests={balloon.guests}
                                         details={listing.details}
                                         listing={listing.listing}
@@ -152,13 +147,13 @@ const BalloonDetailsPage = () => {
                                 ))}
                             </div>
                         ) : (
-                            <NoItemsComponent
+                            <NoItems
                                 title={'There are no listings in this balloon'}
                                 subtext={
                                     'Add listings to this balloon by pasting valid AirBNB links'
                                 }>
                                 <HouseIllustration className={'w-40'} />
-                            </NoItemsComponent>
+                            </NoItems>
                         )
                     }
                 </Await>
@@ -168,190 +163,11 @@ const BalloonDetailsPage = () => {
     );
 };
 
-const ListingComponent = ({
-    listing,
-    details,
-    guests,
-}: {
-    listing: Listing & { tags: Tag[] };
-    details: Awaited<ReturnType<typeof getListing>>;
-    guests: number;
-}) => {
-    const navigation = useNavigation();
-    const [searchParams] = useSearchParams();
-
-    return (
-        <>
-            <div
-                className={
-                    'relative w-full md:w-72 transition hover:scale-105 ease-in-out duration-200 min-w-0'
-                }>
-                {navigation.formData?.get('deleteListing') === listing.id && <RemoveAnimation />}
-                <Form
-                    name={'hello'}
-                    method={'post'}
-                    className={'absolute right-0 bg-white rounded-full p-2 m-2'}>
-                    <button
-                        className={'flex items-center'}
-                        name={'deleteListing'}
-                        value={listing.id}>
-                        <CloseIcon onClick={() => void 0}></CloseIcon>
-                    </button>
-                </Form>
-                <Link to={{ pathname: `listing/${listing.id}`, search: searchParams.toString() }}>
-                    <img
-                        alt={'listing-thumbnail'}
-                        src={listing.thumbnailImageUrl}
-                        className={'bg-gray-200 rounded-xl object-cover h-44 w-full md:w-72'}
-                    />
-                    <div className={'mt-2'}>
-                        <p
-                            className={`text-xs ${
-                                details.availability.isAvailableDuringRequestedTimeframe
-                                    ? 'text-green-500'
-                                    : 'text-red-500'
-                            }`}>
-                            {details.availability.isAvailableDuringRequestedTimeframe
-                                ? 'Available'
-                                : 'Not available'}
-                        </p>
-                        <p className={'font-medium'}>{listing.locationName}</p>
-                    </div>
-                    <div className={'flex gap-x-2 items-center max-w-full'}>
-                        <div className={'text-sm text-gray-600 min-w-0 truncate'}>
-                            {listing.name}
-                        </div>
-                        <Badge>{listing.distance?.toFixed(2) || 0}km</Badge>
-                    </div>
-                    <div className={'mt-1 flex items-center gap-x-2'}>
-                        <p className={'font-medium'}>{details.pricing.totalPrice}</p>
-                        <p className={'text-gray-500 text-sm'}>
-                            €{' '}
-                            {(
-                                parseFloat(details.pricing.totalPrice.replace(/[^0-9.-]+/g, '')) /
-                                guests
-                            )
-                                .toFixed(2)
-                                .toLocaleString()}
-                            /person
-                        </p>
-                    </div>
-                    {listing.tags.length > 0 && (
-                        <div className={'flex items-center gap-x-2 mt-2'}>
-                            {listing.tags.slice(0, 2).map((tag) => (
-                                <Badge
-                                    key={tag.id}
-                                    style={{
-                                        backgroundColor: tag.color,
-                                    }}>
-                                    <p
-                                        style={{
-                                            color: tagColors.find((c) => c.color === tag.color)
-                                                ?.textColor,
-                                        }}>
-                                        {tag.value}
-                                    </p>
-                                </Badge>
-                            ))}
-                            {listing.tags.length > 2 && (
-                                <p className={'text-sm text-gray-400'}>
-                                    +{listing.tags.length - 2}
-                                </p>
-                            )}
-                        </div>
-                    )}
-                </Link>
-            </div>
-        </>
-    );
-};
-
-const SortingComponent = () => {
-    const sortingOptions = ['none', 'distance', 'price', 'locationName'];
-    const sortingNames = new Map([
-        ['none', 'None'],
-        ['distance', 'Distance'],
-        ['price', 'Price'],
-        ['locationName', 'Location name'],
-    ]);
-
-    const [searchParams, setSearchParams] = useSearchParams();
-    const updateUrl = (value: string) => {
-        setSelected(value);
-        searchParams.set('sort', value);
-        setSearchParams(searchParams);
-    };
-    const sort = searchParams.get('sort');
-    const [selected, setSelected] = useState(sort ?? sortingOptions[0]);
-
-    return (
-        <div className={'w-full'}>
-            <Listbox value={selected} onChange={(value) => updateUrl(value)}>
-                <div className='relative'>
-                    <Listbox.Button className='rounded-full py-1 px-3 flex items-center gap-2 bg-white shadow-md border text-sm'>
-                        <p className={'text-gray-600'}>Sort:</p>
-                        <span className='block truncate font-medium'>
-                            {sortingNames.get(selected)}
-                        </span>
-                        <ChevronDown className={'stroke-gray-600 stroke-1'} />
-                    </Listbox.Button>
-                    <Transition
-                        as={Fragment}
-                        leave='transition ease-in duration-100'
-                        leaveFrom='opacity-100'
-                        leaveTo='opacity-0'>
-                        <Listbox.Options className='absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-10'>
-                            {sortingOptions.map((option, index) => (
-                                <Listbox.Option
-                                    key={index}
-                                    className={
-                                        'relative cursor-default select-none px-5 py-2 rounded-full'
-                                    }
-                                    value={option}>
-                                    {({ selected }) => (
-                                        <div className={'flex items-center gap-2'}>
-                                            <span
-                                                className={`block truncate text-gray-600 text-sm ${
-                                                    selected ? 'font-medium' : 'font-normal'
-                                                }`}>
-                                                {sortingNames.get(option)}
-                                            </span>
-                                            {selected ? (
-                                                <span className='left-0 flex items-center p-1'>
-                                                    <CheckIcon
-                                                        className='h-5 w-5'
-                                                        aria-hidden='true'
-                                                    />
-                                                </span>
-                                            ) : null}
-                                        </div>
-                                    )}
-                                </Listbox.Option>
-                            ))}
-                        </Listbox.Options>
-                    </Transition>
-                </div>
-            </Listbox>
-        </div>
-    );
-};
-
-const RemoveAnimation = () => {
-    return (
-        <div
-            className={
-                'absolute w-72 h-44 backdrop-blur-xl bg-white/15 rounded-xl flex items-center justify-center'
-            }>
-            <LoadingSpinner color={'stroke-white'} />
-        </div>
-    );
-};
-
 export const ErrorBoundary = () => {
     const error = useRouteError();
     return (
         <>
-            <ErrorComponent error={error} />
+            <ErrorContainer error={error} />
         </>
     );
 };
