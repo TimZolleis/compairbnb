@@ -1,34 +1,15 @@
-# Welcome to Remix!
+# Compairbnb - comparing airnnb accommodations flawlessly
 
-- [Remix Docs](https://remix.run/docs)
+Created out of the necessity to effectively compare airbnbs' quickly,  compairbnb helps you select your perfect accommodation.
 
-## Deployment
+## How does it work?
+As a registered user, you can create *Balloons* which you can fill with different airbnbs. The balloon also defines settings like the duration of your stay, the number of guests attending and the starting location (which, for destinations that are reachable by car is used for distance calculations). After creation, you can add different airbnbs.
 
-After having run the `create-remix` command and selected "Vercel" as a deployment target, you only need to [import your Git repository](https://vercel.com/new) into Vercel, and it will be deployed.
-
-If you'd like to avoid using a Git repository, you can also deploy the directory by running [Vercel CLI](https://vercel.com/cli):
-
-```sh
-npm i -g vercel
-vercel
-```
-
-It is generally recommended to use a Git repository, because future commits will then automatically be deployed by Vercel, through its [Git Integration](https://vercel.com/docs/concepts/git).
-
-## Development
-
-To run your Remix app locally, make sure your project's local dependencies are installed:
-
-```sh
-npm install
-```
-
-Afterwards, start the Remix development server like so:
-
-```sh
-npm run dev
-```
-
-Open up [http://localhost:3000](http://localhost:3000) and you should be ready to go!
-
-If you're used to using the `vercel dev` command provided by [Vercel CLI](https://vercel.com/cli) instead, you can also use that, but it's not needed.
+## Features
+- Compare prices, distances and features such as the type of the accommodation (house, apartement), number of bedrooms etc.
+- View the listings directly on airbnb or view a Google Maps route
+- Know instantly if the airbnb is available during your selected timeframe
+- View cost per guest
+- Add tags to listings to note important features or make a selection
+- Sort by price, distance, name
+- ...More to come!
