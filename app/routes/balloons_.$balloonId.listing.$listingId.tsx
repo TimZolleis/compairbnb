@@ -2,11 +2,14 @@ import { NavLink, Outlet, useMatches, useNavigate, useSearchParams } from '@remi
 import React, { ReactNode } from 'react';
 import { Modal } from '~/ui/components/modal/Modal';
 import { cn } from '~/utils/utils';
+import { useParameters } from '~/utils/hooks/nav';
 
 const ListingDetailsPage = () => {
     const navigate = useNavigate();
+    const url = useParameters('/balloons/$balloonId');
+    console.log(url);
     return (
-        <Modal width={'4xl'} showModal={true} toggleModal={() => navigate(-1)}>
+        <Modal width={'4xl'} showModal={true} toggleModal={() => navigate(url)}>
             <nav className={'px-5 md:px-0 mt-2 mb-5'}>
                 <div
                     className={
@@ -43,6 +46,7 @@ const TabLink = ({
 
     return (
         <NavLink
+            end={true}
             className={({ isActive, isPending }) =>
                 cn(
                     'flex w-full justify-center items-center p-2 rounded-full text-sm',

@@ -22,6 +22,9 @@ import { Balloon } from '.prisma/client';
 import { DateTime, Interval } from 'luxon';
 import { ListingAvailability } from '~/types/airbnb-listing-availability';
 import { cn } from '~/utils/utils';
+import { CalendarSkeleton } from '~/components/features/calendar/CalendarSkeleton';
+import { AvailabilitySkeleton } from '~/components/features/listing/AvailabilitySkeleton';
+import { useRelative } from '~/utils/hooks/nav';
 
 export const loader = async ({ request, params }: DataFunctionArgs) => {
     const listingId = requireParameter('listingId', params);
@@ -69,9 +72,9 @@ const ListingCalendarPage = () => {
             return start;
         });
     return (
-        <div className={'w-full flex gap-2'}>
+        <div className={'w-full flex flex-col gap-2 px-5 md:flex-row md:px-0'}>
             <Card className={'p-4 w-full grow'}>
-                <Suspense>
+                <Suspense fallback={<CalendarSkeleton />}>
                     <Await resolve={availability}>
                         {(availabilityResult) => (
                             <AvailabilityCalendar availability={availabilityResult} />
@@ -85,12 +88,14 @@ const ListingCalendarPage = () => {
                     <CardDescription>The days you decided to stay</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <Suspense>
+                    <Suspense fallback={<AvailabilitySkeleton />}>
                         <Await resolve={availability}>
                             {(availabilityResult) => (
                                 <div className={'grid gap-1 overflow-y-scroll max-h-72'}>
                                     {selectedDays.map((day) => (
-                                        <div className={'px-3 py-1.5 rounded-md border'}>
+                                        <div
+                                            className={'px-3 py-1.5 rounded-md border'}
+                                            key={day.day}>
                                             <p className={'font-medium text-gray-900'}>
                                                 {day.toFormat('dd.MM.yyyy')}
                                             </p>

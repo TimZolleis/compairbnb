@@ -186,9 +186,7 @@ const ListingComponent = ({
                 className={
                     'relative w-full md:w-72 transition hover:scale-105 ease-in-out duration-200 min-w-0'
                 }>
-                {navigation.formData?.get('deleteListing') === listing.id && (
-                    <RemovingLinkAnimation />
-                )}
+                {navigation.formData?.get('deleteListing') === listing.id && <RemoveAnimation />}
                 <Form
                     name={'hello'}
                     method={'post'}
@@ -287,7 +285,7 @@ const SortingComponent = () => {
     const [selected, setSelected] = useState(sort ?? sortingOptions[0]);
 
     return (
-        <div className={'z-50 w-full'}>
+        <div className={'w-full'}>
             <Listbox value={selected} onChange={(value) => updateUrl(value)}>
                 <div className='relative'>
                     <Listbox.Button className='rounded-full py-1 px-3 flex items-center gap-2 bg-white shadow-md border text-sm'>
@@ -302,7 +300,7 @@ const SortingComponent = () => {
                         leave='transition ease-in duration-100'
                         leaveFrom='opacity-100'
                         leaveTo='opacity-0'>
-                        <Listbox.Options className='absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+                        <Listbox.Options className='absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-10'>
                             {sortingOptions.map((option, index) => (
                                 <Listbox.Option
                                     key={index}
@@ -338,7 +336,7 @@ const SortingComponent = () => {
     );
 };
 
-const RemovingLinkAnimation = () => {
+const RemoveAnimation = () => {
     return (
         <div
             className={

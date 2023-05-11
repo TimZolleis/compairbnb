@@ -8,6 +8,7 @@ import { Balloon } from '.prisma/client';
 import { ChevronUpIcon } from '~/ui/icons/ChevronUpIcon';
 import { PageHeader } from '~/ui/components/common/PageHeader';
 import { prisma } from '../../prisma/db';
+import { Popover } from '@headlessui/react';
 
 export const loader = async ({ request }: DataFunctionArgs) => {
     const user = await requireUser(request);
@@ -84,7 +85,12 @@ export const BalloonDetailsComponent = ({ balloon }: { balloon: Balloon }) => {
     return (
         <div className={'flex items-center gap-2 flex-wrap'}>
             <BalloonDetailBadge name={'Guests'} value={balloon.guests.toString()} />
-            <BalloonDetailBadge name={'Start date'} value={balloon.startDate.toString()} />
+            <Popover className={'relative'}>
+                <Popover.Button>
+                    <BalloonDetailBadge name={'Start date'} value={balloon.startDate.toString()} />
+                </Popover.Button>
+                <Popover.Panel className={'absolute z-10 bg-white'}>Calendar here</Popover.Panel>
+            </Popover>
             <BalloonDetailBadge name={'End date'} value={balloon.endDate.toString()} />
             <BalloonDetailBadge name={'Nights'} value={calculateNights().toString()} />
             <BalloonDetailBadge name={'Starting location'} value={balloon.locationName} />

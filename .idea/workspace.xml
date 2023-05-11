@@ -4,17 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b9e88dae-dedd-4ce1-9bfa-17ee84bf83e8" name="Changes" comment="add cache and restructure">
-      <change afterPath="$PROJECT_DIR$/app/components/features/calendar/AvailabilityCalendar.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/components/features/calendar/dateVariants.ts" afterDir="false" />
+    <list default="true" id="b9e88dae-dedd-4ce1-9bfa-17ee84bf83e8" name="Changes" comment="add availability calendar">
+      <change afterPath="$PROJECT_DIR$/app/components/features/calendar/CalendarSkeleton.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/components/features/listing/AvailabilitySkeleton.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/hooks/nav.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/components/features/listing/ListingImageCarousel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/components/features/listing/ListingImageCarousel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId.calendar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId.calendar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.listing.$listingId.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/map.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/calendar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/types/airbnb-listing-availability.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/types/airbnb-listing-availability.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/utils/axios/api/listing.server.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils/axios/api/listing.server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/balloons_.$balloonId.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,8 +28,8 @@
       <list>
         <option value="Dockerfile" />
         <option value="tsconfig.json" />
-        <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -122,7 +121,9 @@
       <workItem from="1683648371475" duration="5835000" />
       <workItem from="1683654226955" duration="9660000" />
       <workItem from="1683733024311" duration="696000" />
-      <workItem from="1683733748625" duration="8493000" />
+      <workItem from="1683733748625" duration="9232000" />
+      <workItem from="1683820165162" duration="5181000" />
+      <workItem from="1683829480266" duration="98000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1683058528623</created>
@@ -257,7 +258,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683576227465</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="add availability calendar">
+      <created>1683742741619</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1683742741619</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -305,7 +313,8 @@
     <MESSAGE value="add details - forgot to comment in" />
     <MESSAGE value="small ui fixes" />
     <MESSAGE value="fix sort error" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix sort error" />
+    <MESSAGE value="add availability calendar" />
+    <option name="LAST_COMMIT_MESSAGE" value="add availability calendar" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

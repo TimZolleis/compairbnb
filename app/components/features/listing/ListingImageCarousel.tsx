@@ -33,6 +33,7 @@ export const ListingImageCarousel = ({
         </div>
     );
 };
+
 interface NavigationProps {
     index: number;
     imageUrls: string[];
@@ -43,14 +44,15 @@ const ImageNavigation = ({ index, imageUrls, setIndex }: NavigationProps) => {
     const ref = useRef<HTMLDivElement>(null);
     const imageRefs: Array<HTMLImageElement | null> = [];
 
+    //Fancy math to always scroll the selected image in the center of the carousel navigation
     const calculateScrollPosition = () => {
         const imageRef = imageRefs[index];
         if (ref.current && imageRef) {
-            const screenCenter = window.innerWidth / 2;
-            const bounds = imageRef.getBoundingClientRect();
-            const elementWidth = bounds.width;
-            const center = bounds.x + elementWidth / 2;
-            ref.current.scrollLeft += center - screenCenter;
+            const containerBounds = ref.current.getBoundingClientRect();
+            const containerCenter = containerBounds.x + containerBounds.width / 2;
+            const imageBounds = imageRef.getBoundingClientRect();
+            const imageCenter = imageBounds.x + imageBounds.width / 2;
+            ref.current.scrollLeft += imageCenter - containerCenter;
         }
     };
     useEffect(() => {
